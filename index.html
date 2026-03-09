@@ -6,7 +6,27 @@
     <title>CulTech · Power-Fi · Énergie sans fil</title>
     <!-- Tailwind + fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Configuration Tailwind personnalisée pour le thème sombre -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00D4FF',
+                        secondary: '#7000FF',
+                        accent: '#FF006E',
+                        dark: '#0A0A0F',
+                        darker: '#050508',
+                    },
+                    fontFamily: {
+                        display: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -14,8 +34,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f9ff;
-            color: #0b1a2e;
+            background: #0A0A0F;
+            color: #ffffff;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
@@ -25,88 +45,74 @@
             letter-spacing: -0.02em;
         }
 
-        /* glassmorphism doux */
+        /* Glassmorphism sombre */
         .glass {
-            background: rgba(255,255,255,0.7);
+            background: rgba(20, 20, 30, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.6);
-            box-shadow: 0 20px 35px -10px rgba(0,50,100,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5);
         }
         .glass-card {
-            background: rgba(255,255,255,0.6);
+            background: rgba(25, 25, 35, 0.6);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: 0 25px 40px -18px rgba(0,80,150,0.25);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 40px -18px rgba(0, 212, 255, 0.15);
             transition: all 0.2s ease;
         }
         .glass-card:hover {
-            background: rgba(255,255,255,0.8);
-            border-color: white;
-            box-shadow: 0 30px 50px -20px #0066cc40;
+            background: rgba(35, 35, 45, 0.8);
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 30px 50px -20px #00D4FF40;
         }
 
-        /* arrière‑plan clair avec vague subtile */
-        .bg-soft-wave {
-            background-color: #f0f7ff;
-            background-image: radial-gradient(circle at 30% 40%, rgba(0,170,255,0.03) 0%, transparent 30%),
-                              radial-gradient(circle at 80% 70%, rgba(100,80,255,0.03) 0%, transparent 35%);
-        }
-
-        /* bouton power */
-        .power-btn {
-            background: white;
-            color: #0b1a2e;
-            border: 1px solid #d9e6f5;
-            box-shadow: 0 10px 20px -12px #2b6c9e30;
-            transition: all 0.2s;
-        }
-        .power-btn:hover {
-            background: #eef4ff;
-            border-color: #80b7ff;
-            box-shadow: 0 18px 25px -14px #0066cc;
-            transform: scale(1.02);
-        }
-
-        /* badge arrondi */
-        .badge-light {
-            background: rgba(0,120,255,0.08);
-            border: 1px solid rgba(0,140,255,0.2);
-            color: #0066cc;
-            font-weight: 500;
+        /* Badge lumineux */
+        .badge-tech {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: #00D4FF;
             border-radius: 40px;
             padding: 0.35rem 1.2rem;
             display: inline-block;
             backdrop-filter: blur(4px);
+            font-weight: 500;
         }
 
-        /* icône puce */
-        .chip-glow {
-            box-shadow: 0 0 0 2px rgba(0,160,255,0.2), 0 15px 25px -12px #0055aa;
+        /* Bouton power */
+        .power-btn {
+            background: linear-gradient(135deg, #00D4FF, #7000FF);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 20px -8px #00D4FF80;
+            transition: all 0.2s;
+        }
+        .power-btn:hover {
+            box-shadow: 0 18px 25px -8px #00D4FF;
+            transform: scale(1.02);
         }
 
-        /* notification simulator */
-        .notif-sim {
-            background: rgba(255,255,255,0.85);
+        /* Notification Power-Fi */
+        .notif-panel {
+            background: rgba(30, 30, 40, 0.9);
             backdrop-filter: blur(20px);
-            border: 1px solid white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 36px;
-            box-shadow: 0 25px 45px -18px #143b66;
+            box-shadow: 0 25px 45px -18px #000000;
         }
 
-        /* toggle personnalisé */
+        /* Toggle personnalisé */
         .toggle-switch {
             width: 56px;
             height: 30px;
-            background: #cbd5e1;
+            background: #2A2A3A;
             border-radius: 40px;
             position: relative;
             cursor: pointer;
             transition: background 0.25s;
-            box-shadow: inset 0 1px 4px #00000015;
+            box-shadow: inset 0 1px 4px #00000050;
         }
         .toggle-switch.active {
-            background: #0066ff;
+            background: #00D4FF;
         }
         .toggle-dot {
             width: 24px;
@@ -117,13 +123,13 @@
             top: 3px;
             left: 3px;
             transition: left 0.25s;
-            box-shadow: 0 2px 6px #00000020;
+            box-shadow: 0 2px 6px #00000080;
         }
         .toggle-switch.active .toggle-dot {
             left: 29px;
         }
 
-        /* animations douces */
+        /* Animation flottante */
         .float-soft {
             animation: float 6s infinite ease-in-out;
         }
@@ -133,58 +139,66 @@
             100% { transform: translateY(0px); }
         }
 
-        /* scroll indicator */
-        .scroll-down {
-            border: 2px solid #b7d6f0;
-            width: 30px;
-            height: 50px;
-            border-radius: 30px;
-            position: relative;
-        }
-        .scroll-down::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 10px;
-            background: #0066cc;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 8px;
-            border-radius: 4px;
-            animation: scrollMove 2s infinite;
-        }
-        @keyframes scrollMove {
-            0% { opacity: 1; top: 8px; }
-            80% { opacity: 0; top: 30px; }
-            100% { opacity: 0; top: 30px; }
-        }
-
-        /* puces d'énergie */
-        .energy-pulse {
-            position: relative;
-        }
-        .energy-pulse::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid #80c4ff;
-            opacity: 0;
-            animation: ping 2.5s infinite;
-        }
-        @keyframes ping {
-            0% { transform: scale(0.8); opacity: 0.6; }
-            100% { transform: scale(1.8); opacity: 0; }
-        }
-
-        /* faq */
-        .faq-item {
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.7);
+        /* Schéma technique - puce Power-Fi */
+        .chip-diagram {
+            background: #1A1A2A;
             border-radius: 28px;
-            margin-bottom: 12px;
+            padding: 1.5rem;
+            border: 1px solid #333350;
+            box-shadow: 0 30px 50px -20px #00D4FF40;
+            position: relative;
+            overflow: hidden;
+        }
+        .chip-diagram::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, #00D4FF10, transparent 60%);
+            pointer-events: none;
+        }
+        .diagram-item {
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid #333360;
+            border-radius: 14px;
+            padding: 0.75rem;
+            font-size: 0.8rem;
+            color: #CCDDFF;
+            backdrop-filter: blur(4px);
             transition: all 0.2s;
+        }
+        .diagram-item:hover {
+            border-color: #00D4FF;
+            background: rgba(40, 40, 60, 0.9);
+            box-shadow: 0 0 15px #00D4FF40;
+        }
+
+        /* Formulaire */
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 0.9rem 1.2rem;
+            color: white;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #00D4FF;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px #00D4FF20;
+        }
+        .form-input::placeholder {
+            color: #8899AA;
+        }
+
+        /* FAQ */
+        .faq-item {
+            background: rgba(30, 30, 40, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            margin-bottom: 12px;
         }
         .faq-question {
             padding: 1.5rem 2rem;
@@ -193,13 +207,14 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            color: white;
         }
         .faq-answer {
             max-height: 0;
             overflow: hidden;
             padding: 0 2rem;
             transition: max-height 0.4s ease, padding 0.3s;
-            color: #1e293b;
+            color: #B0C0D0;
             font-size: 1rem;
             line-height: 1.6;
         }
@@ -214,308 +229,406 @@
             transition: transform 0.3s;
         }
 
-        /* nav */
-        .nav-scrolled {
-            background: rgba(255,255,255,0.8) !important;
-            backdrop-filter: blur(18px);
-            border-bottom: 1px solid rgba(255,255,255,0.7);
-            box-shadow: 0 10px 25px -15px #93c5fd;
+        /* Scroll personnalisé */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A1A2A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00D4FF, #7000FF);
+            border-radius: 4px;
         }
 
-        /* footer */
-        .footer-link {
-            color: #2d3e5f;
-            transition: color 0.2s;
-        }
-        .footer-link:hover {
-            color: #0066ff;
+        /* Navigation */
+        .nav-scrolled {
+            background: rgba(10, 10, 20, 0.9) !important;
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
-<body class="bg-soft-wave antialiased">
+<body class="bg-dark text-white antialiased">
 
-    <!-- navigation -->
+    <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent py-4">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0066ff] to-[#5271ff] flex items-center justify-center shadow-md">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                 </div>
-                <span class="font-display text-xl font-bold text-[#0b1a2e]">CulTech</span>
+                <span class="font-display text-xl font-bold text-white">CulTech</span>
             </div>
-            <div class="hidden md:flex items-center gap-8 text-[#1e2f45] font-medium">
-                <a href="#tech" class="hover:text-[#0066ff] transition">Technologie</a>
-                <a href="#features" class="hover:text-[#0066ff] transition">Fonctionnalités</a>
-                <a href="#securite" class="hover:text-[#0066ff] transition">Sécurité</a>
-                <a href="#faq" class="hover:text-[#0066ff] transition">FAQ</a>
-                <a href="#contact" class="bg-[#0066ff] text-white px-5 py-2 rounded-full text-sm shadow-md shadow-[#0066ff40] hover:shadow-lg hover:shadow-[#0066ff70] hover:scale-105 transition">Contacter</a>
+            <div class="hidden md:flex items-center gap-8 text-gray-300 font-medium">
+                <a href="#tech" class="hover:text-primary transition">Technologie</a>
+                <a href="#features" class="hover:text-primary transition">Fonctionnalités</a>
+                <a href="#securite" class="hover:text-primary transition">Sécurité</a>
+                <a href="#faq" class="hover:text-primary transition">FAQ</a>
+                <a href="#contact" class="px-5 py-2 bg-primary/10 border border-primary/30 rounded-full text-primary hover:bg-primary/20 transition">Contact</a>
             </div>
             <!-- mobile menu button -->
-            <button id="menuBtn" class="md:hidden text-[#1e2f45] p-2">
+            <button id="menuBtn" class="md:hidden text-gray-300 p-2">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
         </div>
         <!-- mobile dropdown -->
-        <div id="mobileMenu" class="hidden md:hidden mx-4 mt-2 p-4 glass-card rounded-3xl">
-            <a href="#tech" class="block py-3 px-2 hover:text-[#0066ff]">Technologie</a>
-            <a href="#features" class="block py-3 px-2 hover:text-[#0066ff]">Fonctionnalités</a>
-            <a href="#securite" class="block py-3 px-2 hover:text-[#0066ff]">Sécurité</a>
-            <a href="#faq" class="block py-3 px-2 hover:text-[#0066ff]">FAQ</a>
-            <a href="#contact" class="block py-3 px-2 font-semibold text-[#0066ff]">Contact</a>
+        <div id="mobileMenu" class="hidden md:hidden mx-4 mt-2 p-4 glass rounded-3xl">
+            <a href="#tech" class="block py-3 px-2 text-gray-300 hover:text-primary">Technologie</a>
+            <a href="#features" class="block py-3 px-2 text-gray-300 hover:text-primary">Fonctionnalités</a>
+            <a href="#securite" class="block py-3 px-2 text-gray-300 hover:text-primary">Sécurité</a>
+            <a href="#faq" class="block py-3 px-2 text-gray-300 hover:text-primary">FAQ</a>
+            <a href="#contact" class="block py-3 px-2 text-primary font-semibold">Contact</a>
         </div>
     </nav>
 
-    <!-- HERO section avec démo interactive -->
+    <!-- HERO - Nouvelle approche : Power-Fi dans les notifications -->
     <section class="relative pt-36 pb-28 md:pt-44 md:pb-36 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-14 items-center">
+        <!-- Grille de fond -->
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%2300D4FF\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-14 items-center relative z-10">
             <!-- left -->
             <div class="space-y-7">
-                <span class="badge-light flex items-center gap-2 w-fit">
-                    <span class="w-2 h-2 rounded-full bg-[#0066ff] animate-pulse"></span> Innovation Dakar
+                <span class="badge-tech flex items-center gap-2 w-fit">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> 
+                    Innovation Dakar
                 </span>
-                <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-[#0b1a2e]">
-                    Power-Fi<span class="text-[#0066ff]">.</span><br>L’énergie sans fil, comme le Wi‑Fi
+                <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                    Power-Fi<span class="text-primary">.</span><br>Comme le Wi-Fi,<br>dans vos notifications
                 </h1>
-                <p class="text-xl text-[#2d4059] max-w-xl">
-                    Activez la recharge depuis vos notifications. Plus besoin de câble ni de plaque : la première puce au monde intégrée nativement.
+                <p class="text-xl text-gray-400 max-w-xl">
+                    Activez Power-Fi directement depuis le panneau de notifications. Votre téléphone se connecte automatiquement à une source d'énergie ambiante et commence à charger, sans aucun boîtier ni accessoire.
                 </p>
                 <div class="flex flex-wrap gap-5 pt-4">
                     <button class="power-btn px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
-                        Voir la démo
+                        Activer la révolution
                     </button>
-                    <button class="bg-white/60 backdrop-blur-sm border border-white/70 px-8 py-4 rounded-full text-lg font-medium text-[#0b1a2e] shadow-sm hover:bg-white/80 transition">Découvrir</button>
                 </div>
             </div>
-            <!-- right: simulateur de notification interactif -->
+            <!-- right : Notification Power-Fi -->
             <div class="relative float-soft">
-                <div class="notif-sim p-6 max-w-md mx-auto">
+                <div class="notif-panel p-6 max-w-md mx-auto">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="flex gap-2"><span class="w-3 h-3 rounded-full bg-red-400"></span><span class="w-3 h-3 rounded-full bg-yellow-400"></span><span class="w-3 h-3 rounded-full bg-green-400"></span></div>
-                        <span class="text-xs text-gray-500 tracking-wider">CENTRE DE CONTRÔLE</span>
+                        <span class="text-xs text-gray-400 tracking-wider">Panneau de notifications</span>
                     </div>
-                    <!-- rangée power-fi -->
-                    <div class="flex items-center justify-between bg-white/70 backdrop-blur-sm p-4 rounded-3xl border border-white/80 shadow-sm">
+                    
+                    <!-- Rangée Wi-Fi -->
+                    <div class="flex items-center justify-between bg-white/5 backdrop-blur-sm p-4 rounded-3xl border border-white/10 mb-3">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium">Wi-Fi</div>
+                                <div class="text-xs text-gray-400">Connexion automatique</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-400">Activé</div>
+                    </div>
+                    
+                    <!-- Rangée Bluetooth -->
+                    <div class="flex items-center justify-between bg-white/5 backdrop-blur-sm p-4 rounded-3xl border border-white/10 mb-3">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01m-6.838-4.172c4.806-4.806 10.156-4.806 14.962 0M6.162 7.696c6.194-6.194 13.795-6.194 19.989 0"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium">Bluetooth</div>
+                                <div class="text-xs text-gray-400">Connecté</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-400">Activé</div>
+                    </div>
+                    
+                    <!-- Rangée POWER-FI (star) -->
+                    <div class="flex items-center justify-between bg-primary/10 backdrop-blur-sm p-4 rounded-3xl border border-primary/30 mb-4">
                         <div class="flex items-center gap-4">
                             <div class="relative">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0066ff] to-[#3b82f6] flex items-center justify-center text-white shadow-inner">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                 </div>
-                                <div class="energy-pulse absolute -inset-2"></div>
+                                <div class="absolute -inset-1 border-2 border-primary rounded-xl opacity-30 animate-ping"></div>
                             </div>
                             <div>
                                 <div class="font-semibold text-lg">Power‑Fi</div>
-                                <div id="powerStatus" class="text-sm text-gray-600">Appuyez pour activer</div>
+                                <div id="powerStatus" class="text-sm text-gray-300">Appuyez pour charger</div>
                             </div>
                         </div>
-                        <!-- toggle custom -->
+                        <!-- toggle -->
                         <div id="togglePower" class="toggle-switch">
                             <div class="toggle-dot"></div>
                         </div>
                     </div>
-                    <!-- stats (apparaissent quand activé) -->
-                    <div id="chargingStats" class="mt-5 grid grid-cols-2 gap-4 opacity-50 transition-opacity duration-500">
-                        <div class="bg-white/60 rounded-2xl p-4 border border-white">
-                            <div class="text-2xl font-bold text-[#0066ff]" id="batteryLevel">45%</div>
-                            <div class="text-xs text-gray-500">batterie</div>
+                    
+                    <!-- stats charge -->
+                    <div id="chargingStats" class="grid grid-cols-2 gap-4 opacity-50 transition-opacity duration-500">
+                        <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
+                            <div class="text-2xl font-bold text-primary" id="batteryLevel">45%</div>
+                            <div class="text-xs text-gray-400">batterie</div>
                         </div>
-                        <div class="bg-white/60 rounded-2xl p-4 border border-white">
-                            <div class="text-2xl font-bold text-[#5271ff]" id="chargingSpeed">0 W</div>
-                            <div class="text-xs text-gray-500">puissance</div>
+                        <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
+                            <div class="text-2xl font-bold text-secondary" id="chargingSpeed">0 W</div>
+                            <div class="text-xs text-gray-400">puissance</div>
                         </div>
                     </div>
+                    
+                    <p class="text-xs text-gray-500 text-center mt-4">Activez Power-Fi et rechargez sans fil, sans plaque</p>
                 </div>
-                <!-- vague lumineuse autour -->
-                <div class="absolute -z-10 inset-0 bg-gradient-to-r from-[#0066ff10] to-[#a0c8ff20] blur-3xl rounded-full"></div>
             </div>
-        </div>
-        <!-- scroll down indicator -->
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block">
-            <div class="scroll-down"></div>
         </div>
     </section>
 
-    <!-- TECHNOLOGIE (ex‑Technology) -->
-    <section id="tech" class="py-24 bg-white/30 backdrop-blur-sm">
+    <!-- SCHÉMA TECHNIQUE (d'après l'image) -->
+    <section id="tech" class="py-24 bg-darker/50">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8 order-2 lg:order-1">
-                    <span class="badge-light">⚡ Puce révolutionnaire</span>
-                    <h2 class="font-display text-4xl md:text-5xl font-bold leading-tight text-[#0b1a2e]">Intégrée au cœur<br>de vos appareils</h2>
-                    <p class="text-gray-700 text-lg leading-relaxed">
-                        Fini les accessoires : la technologie Power-Fi repose sur une puce miniaturisée (5 nm) directement soudée sur la carte mère. Elle capte l’énergie ambiante et la convertit avec un rendement record de 98 %.
-                    </p>
-                    <div class="grid sm:grid-cols-2 gap-5">
-                        <div class="flex gap-4 bg-white/40 rounded-3xl p-5 border border-white/60">
-                            <span class="text-3xl font-bold text-[#0066ff]">15m</span>
-                            <span class="text-gray-600">portée<br>maximale</span>
+            <div class="text-center mb-16">
+                <span class="badge-tech">⚡ Technologie révolutionnaire</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mt-6">PowerFi Universal Pro</h2>
+                <p class="text-gray-400 text-xl max-w-2xl mx-auto">Une seule puce pour tous les appareils • 5–100 W • GaN 2026</p>
+            </div>
+            
+            <!-- Schéma de la puce -->
+            <div class="chip-diagram max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Colonne gauche -->
+                    <div class="space-y-4">
+                        <div class="diagram-item">
+                            <span class="text-primary font-bold">Antenne Phased Array</span>
+                            <span class="block text-xs text-gray-400">Configurable (4 à 32 éléments)</span>
                         </div>
-                        <div class="flex gap-4 bg-white/40 rounded-3xl p-5 border border-white/60">
-                            <span class="text-3xl font-bold text-[#0066ff]">50W</span>
-                            <span class="text-gray-600">puissance<br>crête</span>
+                        <div class="diagram-item">
+                            <span class="text-primary font-bold">Redresseur RF+DC</span>
+                            <span class="block text-xs text-gray-400">jusqu'à 100 W</span>
+                        </div>
+                        <div class="diagram-item">
+                            <span class="text-primary font-bold">PMIC Intelligent</span>
+                            <span class="block text-xs text-gray-400">Power Gating & Gestion Thermique</span>
+                        </div>
+                        <div class="diagram-item">
+                            <span class="text-primary font-bold">Convertisseur DC-DC Scalable</span>
+                            <span class="block text-xs text-gray-400">5-100 W</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Colonne droite -->
+                    <div class="space-y-4">
+                        <div class="diagram-item">
+                            <span class="text-primary font-bold">Microcontrôleur Dédié PowerFi</span>
+                            <span class="block text-xs text-gray-400">toggle ON + charge auto + arrêt à 100%</span>
+                        </div>
+                        <div class="diagram-item">
+                            <span class="text-primary font-bold">Module Comm BLE/UWB</span>
+                            <span class="block text-xs text-gray-400">+ AI Beamforming</span>
+                        </div>
+                        <div class="diagram-item">
+                            <span class="text-primary font-bold">Circuits Sécurité</span>
+                            <span class="block text-xs text-gray-400">multi‑couche</span>
+                        </div>
+                        <div class="diagram-item bg-primary/10 border-primary/30">
+                            <span class="text-white font-bold">Compatible Android, iOS, Tablettes, PC</span>
                         </div>
                     </div>
                 </div>
-                <!-- visuel puce -->
-                <div class="relative flex justify-center order-1 lg:order-2">
-                    <div class="w-72 h-72 rounded-3xl bg-gradient-to-br from-[#c1ddff] to-[#ebf3ff] p-5 chip-glow flex items-center justify-center">
-                        <div class="w-48 h-48 relative">
-                            <div class="absolute inset-0 border-4 border-[#0066ff] rounded-3xl opacity-30 animate-pulse"></div>
-                            <div class="absolute inset-4 border-2 border-[#3b82f6] rounded-2xl opacity-40" style="animation: spin 12s linear infinite;"></div>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-24 h-24 bg-gradient-to-br from-[#0066ff] to-[#608cff] rounded-2xl shadow-2xl flex items-center justify-center text-white">
-                                    <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                
+                <!-- Note centrale -->
+                <div class="mt-6 text-center text-gray-300 text-sm border-t border-white/10 pt-4">
+                    Scalable de 5 W à 100 W • Baseé sur technologies GaN 2026
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FONCTIONNALITÉS / Comment ça marche (corrigé : maintenant visible) -->
+    <!-- FONCTIONNALITÉS : 3 étapes -->
     <section id="features" class="py-28">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                <span class="badge-light">✨ 3 étapes simples</span>
-                <h2 class="font-display text-4xl md:text-5xl font-bold mt-6 text-[#0b1a2e]">Comment ça marche ?</h2>
-                <p class="text-gray-600 text-xl max-w-2xl mx-auto">Une expérience aussi naturelle que le Wi‑Fi.</p>
+                <span class="badge-tech">✨ Simplicité absolue</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mt-6">Comment ça marche ?</h2>
+                <p class="text-gray-400 text-xl max-w-2xl mx-auto">Activez, connectez, chargez. Aussi simple que le Wi‑Fi.</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- 1 -->
                 <div class="glass-card rounded-4xl p-8 text-center hover:-translate-y-2 transition-transform">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0066ff] to-[#3b82f6] text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">1</div>
-                    <h3 class="text-2xl font-bold mb-3">Activez</h3>
-                    <p class="text-gray-600">Depuis le panneau de notifications, un simple clic sur l’icône Power-Fi lance la recherche.</p>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">1</div>
+                    <h3 class="text-2xl font-bold mb-3">Activez Power-Fi</h3>
+                    <p class="text-gray-400">Dans le panneau de notifications, comme pour le Wi‑Fi ou le Bluetooth.</p>
                 </div>
                 <!-- 2 -->
                 <div class="glass-card rounded-4xl p-8 text-center hover:-translate-y-2 transition-transform">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#5271ff] to-[#7a9aff] text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">2</div>
-                    <h3 class="text-2xl font-bold mb-3">Détection</h3>
-                    <p class="text-gray-600">L’appareil scanne les émetteurs Power-Fi dans un rayon de 15 m et choisit le plus puissant.</p>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">2</div>
+                    <h3 class="text-2xl font-bold mb-3">Connexion auto</h3>
+                    <p class="text-gray-400">La puce détecte la source d'énergie la plus proche et s'y connecte instantanément.</p>
                 </div>
                 <!-- 3 -->
                 <div class="glass-card rounded-4xl p-8 text-center hover:-translate-y-2 transition-transform">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#3b82f6] to-[#00a3ff] text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">3</div>
-                    <h3 class="text-2xl font-bold mb-3">Charge</h3>
-                    <p class="text-gray-600">La transmission d’énergie commence, automatique et sécurisée, sans aucun contact.</p>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">3</div>
+                    <h3 class="text-2xl font-bold mb-3">Charge sans fil</h3>
+                    <p class="text-gray-400">La recharge commence immédiatement, sans aucun boîtier ni accessoire.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- SÉCURITÉ -->
-    <section id="securite" class="py-28 bg-white/30 backdrop-blur-sm">
+    <section id="securite" class="py-28 bg-darker/50">
         <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
             <div>
-                <span class="badge-light">🛡️ Safe by Design™</span>
-                <h2 class="font-display text-4xl md:text-5xl font-bold mt-5 text-[#0b1a2e]">La sécurité au cœur du système</h2>
-                <p class="text-gray-700 text-lg mt-6">Des capteurs permanents coupent immédiatement la charge en cas d’obstacle ou d’anomalie. Notre puce respecte les normes internationales les plus strictes (CE, FCC, ISO 27001).</p>
+                <span class="badge-tech">🛡️ Safe by Design™</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mt-5">Sécurité multicouche</h2>
+                <p class="text-gray-400 text-lg mt-6">Notre puce intègre des circuits de sécurité dédiés : arrêt automatique à 100%, gestion thermique, cryptage AES-256 des communications.</p>
                 <div class="grid grid-cols-2 gap-4 mt-10">
-                    <div class="bg-white/50 p-5 rounded-3xl"><span class="font-bold text-2xl text-[#0066ff]">0</span> <span class="text-gray-600">incident</span></div>
-                    <div class="bg-white/50 p-5 rounded-3xl"><span class="font-bold text-2xl text-[#0066ff]">24/7</span> <span class="text-gray-600">monitoring</span></div>
+                    <div class="glass p-5 rounded-3xl"><span class="font-bold text-2xl text-primary">0</span> <span class="text-gray-400">incident</span></div>
+                    <div class="glass p-5 rounded-3xl"><span class="font-bold text-2xl text-primary">24/7</span> <span class="text-gray-400">monitoring</span></div>
                 </div>
             </div>
             <div class="flex justify-center">
-                <div class="w-80 h-80 rounded-full bg-white/50 backdrop-blur border-4 border-white flex items-center justify-center shadow-2xl">
-                    <svg class="w-36 h-36 text-[#0066ff]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <div class="w-80 h-80 rounded-full glass border-4 border-primary/20 flex items-center justify-center shadow-2xl">
+                    <svg class="w-36 h-36 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ (réécrite propre) -->
+    <!-- FAQ -->
     <section id="faq" class="py-28">
         <div class="max-w-4xl mx-auto px-6">
             <div class="text-center mb-14">
-                <span class="badge-light">❓ FAQ</span>
-                <h2 class="font-display text-4xl md:text-5xl font-bold mt-4 text-[#0b1a2e]">Questions fréquentes</h2>
+                <span class="badge-tech">❓ FAQ</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mt-4">Questions fréquentes</h2>
             </div>
             <div>
                 <!-- item 1 -->
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Power-Fi est‑il compatible avec mon appareil actuel ?</span>
-                        <svg class="chevron-icon w-5 h-5 text-[#0066ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                        <span>Dois-je acheter un boîtier ou une plaque ?</span>
+                        <svg class="chevron-icon w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <div class="faq-answer">Les smartphones récents équipés de notre puce (annoncés fin 2025) le supportent nativement. Pour les autres, un adaptateur universel Power-Fi sera commercialisé début 2026.</div>
+                    <div class="faq-answer">Non, Power-Fi est intégré directement dans le téléphone. Il suffit d'activer la fonction dans les notifications pour capter l'énergie ambiante. Aucun accessoire externe n'est nécessaire.</div>
                 </div>
                 <!-- item 2 -->
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>La charge à distance est‑elle sans danger ?</span>
-                        <svg class="chevron-icon w-5 h-5 text-[#0066ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                        <span>Comment mon téléphone capte-t-il l'énergie ?</span>
+                        <svg class="chevron-icon w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <div class="faq-answer">Oui, la technologie utilise des fréquences normalisées et une puissance inférieure aux seuils de sécurité. De plus, le faisceau s’interrompt automatiquement si un corps vivant entre dans la zone.</div>
+                    <div class="faq-answer">La puce Power-Fi utilise une antenne phased array pour capter les ondes électromagnétiques ambiantes (émises par les bornes spéciales déployées dans les villes) et les convertir en électricité via un redresseur RF+DC intégré.</div>
                 </div>
                 <!-- item 3 -->
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Où sont installés les émetteurs Power-Fi ?</span>
-                        <svg class="chevron-icon w-5 h-5 text-[#0066ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                        <span>Où sont disponibles les sources d'énergie ?</span>
+                        <svg class="chevron-icon w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <div class="faq-answer">Dakar et sa région comptent déjà plus de 200 bornes (gares, aéroport, centres commerciaux). Nous déployons rapidement à Abidjan, Casablanca et Johannesburg.</div>
-                </div>
-                <!-- item 4 -->
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Puis-je installer un émetteur chez moi ?</span>
-                        <svg class="chevron-icon w-5 h-5 text-[#0066ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                    </div>
-                    <div class="faq-answer">Oui, le boîtier domestique “Power‑Fi Home” se branche sur une prise standard et couvre jusqu’à 80 m². Disponible en précommande.</div>
+                    <div class="faq-answer">À Dakar, plus de 200 bornes sont déjà actives. Le déploiement s'étend à Abidjan, Casablanca, Lagos et Johannesburg. Chaque borne crée une zone de charge dans un rayon de 15 mètres.</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="py-28 bg-white/40 backdrop-blur-sm">
+    <!-- CONTACT avec formulaire amélioré et WhatsApp -->
+    <section id="contact" class="py-28 bg-darker/50">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="glass-card rounded-4xl p-12 md:p-16 grid md:grid-cols-2 gap-12">
-                <div>
-                    <h2 class="font-display text-4xl font-bold text-[#0b1a2e]">Rejoignez l’ère Power‑Fi</h2>
-                    <p class="text-gray-700 mt-4 text-lg">Démonstrations, intégration OEM, presse… notre équipe vous répond sous 24h.</p>
-                    <div class="mt-8 space-y-4">
-                        <div class="flex items-center gap-4"><div class="w-12 h-12 bg-[#0066ff10] rounded-full flex items-center justify-center">📍</div><span class="text-gray-800">Dakar, Sénégal</span></div>
-                        <div class="flex items-center gap-4"><div class="w-12 h-12 bg-[#0066ff10] rounded-full flex items-center justify-center">✉️</div><span class="text-gray-800">contact@cultech.sn</span></div>
+            <div class="glass rounded-4xl p-12 md:p-16">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <span class="badge-tech mb-4 inline-block">📱 Contact</span>
+                        <h2 class="font-display text-4xl font-bold mb-4">Parlons de Power‑Fi</h2>
+                        <p class="text-gray-400 text-lg">Partenariat, investissement, intégration OEM ou simple curiosité : écrivez-nous.</p>
+                        
+                        <div class="mt-8 space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl">📍</div>
+                                <span class="text-gray-300">Dakar, Sénégal</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl">✉️</div>
+                                <span class="text-gray-300">contact@cultech.sn</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl">📱</div>
+                                <span class="text-gray-300">WhatsApp : +221 78 485 56 99</span>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <!-- Formulaire avec champs obligatoires -->
+                    <form onsubmit="event.preventDefault(); alert('Message envoyé (simulation)');" class="space-y-5">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <input type="text" placeholder="Prénom *" required class="form-input">
+                            </div>
+                            <div>
+                                <input type="text" placeholder="Nom *" required class="form-input">
+                            </div>
+                        </div>
+                        <input type="email" placeholder="Email professionnel *" required class="form-input">
+                        <input type="tel" placeholder="Téléphone (WhatsApp)" class="form-input">
+                        <select required class="form-input">
+                            <option value="" disabled selected>Vous êtes *</option>
+                            <option value="partenariat">Partenariat / OEM</option>
+                            <option value="investisseur">Investisseur</option>
+                            <option value="developpeur">Développeur</option>
+                            <option value="presse">Presse</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                        <textarea rows="4" placeholder="Votre message *" required class="form-input"></textarea>
+                        
+                        <div class="text-xs text-gray-400 mb-2">* Champs obligatoires</div>
+                        
+                        <button class="w-full power-btn py-4 rounded-2xl font-semibold text-lg">
+                            Envoyer la demande
+                        </button>
+                    </form>
                 </div>
-                <form onsubmit="event.preventDefault();alert('Message envoyé (simulation)');" class="space-y-5">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" placeholder="Prénom" class="p-4 rounded-2xl bg-white/70 border border-white/90 focus:outline-none focus:ring-2 focus:ring-[#0066ff]">
-                        <input type="text" placeholder="Nom" class="p-4 rounded-2xl bg-white/70 border border-white/90 focus:outline-none focus:ring-2 focus:ring-[#0066ff]">
-                    </div>
-                    <input type="email" placeholder="Email" class="w-full p-4 rounded-2xl bg-white/70 border border-white/90">
-                    <select class="w-full p-4 rounded-2xl bg-white/70 border border-white/90 text-gray-700">
-                        <option>Intégrateur / OEM</option><option>Développeur</option><option>Presse</option><option>Autre</option>
-                    </select>
-                    <textarea rows="4" placeholder="Message" class="w-full p-4 rounded-2xl bg-white/70 border border-white/90"></textarea>
-                    <button class="w-full bg-[#0066ff] text-white py-4 rounded-2xl font-semibold text-lg shadow-md hover:bg-[#1a75ff] transition">Envoyer</button>
-                </form>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-white/60 backdrop-blur-sm border-t border-white/70 py-12">
+    <footer class="border-t border-white/10 py-12">
         <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
-            <div><div class="flex items-center gap-2 text-xl font-bold"><span class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0066ff] to-[#608cff]"></span>CulTech</div><p class="text-sm text-gray-500 mt-4">© 2026 – Dakar, Sénégal.<br> Tous droits réservés.</p></div>
-            <div><h4 class="font-semibold mb-4">Produit</h4><ul class="space-y-2 text-sm text-gray-600"><li><a href="#" class="footer-link">Power‑Fi Chip</a></li><li><a href="#" class="footer-link">Émetteurs</a></li><li><a href="#" class="footer-link">SDK</a></li></ul></div>
-            <div><h4 class="font-semibold mb-4">Société</h4><ul class="space-y-2 text-sm text-gray-600"><li><a href="#" class="footer-link">À propos</a></li><li><a href="#" class="footer-link">Carrières</a></li><li><a href="#" class="footer-link">Contact</a></li></ul></div>
-            <div><h4 class="font-semibold mb-4">Réseaux</h4><div class="flex gap-4 text-gray-500"><a href="#">𝕏</a><a href="#">𝕀𝕘</a><a href="#">𝕃𝕚𝕟</a></div></div>
+            <div>
+                <div class="flex items-center gap-2 text-xl font-bold">
+                    <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary"></span>
+                    CulTech
+                </div>
+                <p class="text-sm text-gray-500 mt-4">© 2026 – Dakar, Sénégal.<br> Tous droits réservés.</p>
+            </div>
+            <div><h4 class="font-semibold mb-4 text-gray-300">Produit</h4>
+                <ul class="space-y-2 text-sm text-gray-500">
+                    <li><a href="#" class="hover:text-primary transition">Power‑Fi Chip</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Spécifications</a></li>
+                    <li><a href="#" class="hover:text-primary transition">SDK</a></li>
+                </ul>
+            </div>
+            <div><h4 class="font-semibold mb-4 text-gray-300">Société</h4>
+                <ul class="space-y-2 text-sm text-gray-500">
+                    <li><a href="#" class="hover:text-primary transition">À propos</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Carrières</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4 text-gray-300">WhatsApp</h4>
+                <p class="text-sm text-gray-400">+221 78 485 56 99</p>
+                <p class="text-xs text-gray-600 mt-2">Disponible 24/7 pour les partenaires</p>
+            </div>
         </div>
     </footer>
 
     <script>
-        // --- toggle power (interactivité douce) ---
+        // --- Toggle Power-Fi ---
         const toggle = document.getElementById('togglePower');
         const powerStatus = document.getElementById('powerStatus');
         const statsDiv = document.getElementById('chargingStats');
@@ -528,7 +641,7 @@
             powerOn = !powerOn;
             toggle.classList.toggle('active', powerOn);
             if (powerOn) {
-                powerStatus.innerText = 'Connecté · 15 m';
+                powerStatus.innerText = 'Connecté · Charge en cours';
                 statsDiv.style.opacity = '1';
                 let level = 45;
                 clearInterval(interval);
@@ -538,12 +651,12 @@
                         batterySpan.innerText = level + '%';
                         speedSpan.innerText = (12 + Math.random() * 8).toFixed(1) + ' W';
                     } else {
-                        powerStatus.innerText = 'Complètement chargé';
+                        powerStatus.innerText = 'Batterie pleine';
                         clearInterval(interval);
                     }
                 }, 150);
             } else {
-                powerStatus.innerText = 'Appuyez pour activer';
+                powerStatus.innerText = 'Appuyez pour charger';
                 statsDiv.style.opacity = '0.5';
                 batterySpan.innerText = '45%';
                 speedSpan.innerText = '0 W';
@@ -551,7 +664,7 @@
             }
         });
 
-        // --- FAQ (toggle un seul à la fois) ---
+        // --- FAQ toggle ---
         window.toggleFaq = function(el) {
             const item = el.closest('.faq-item');
             const isExpanded = item.classList.contains('expanded');
@@ -571,19 +684,15 @@
             else navbar.classList.remove('nav-scrolled');
         });
 
-        // --- animations gsap simples (scroll) ---
+        // --- animations GSAP simples ---
         gsap.registerPlugin(ScrollTrigger);
         gsap.from('.glass-card', {
             scrollTrigger: { trigger: '#features', start: 'top 75%' },
             y: 40, opacity: 0, duration: 0.9, stagger: 0.2
         });
-        gsap.from('#tech .grid', {
+        gsap.from('.chip-diagram', {
             scrollTrigger: { trigger: '#tech', start: 'top 75%' },
-            x: -30, opacity: 0, duration: 1
-        });
-        gsap.from('#securite .grid', {
-            scrollTrigger: { trigger: '#securite', start: 'top 80%' },
-            scale: 0.95, opacity: 0, duration: 1
+            y: 30, opacity: 0, duration: 1
         });
     </script>
 </body>
