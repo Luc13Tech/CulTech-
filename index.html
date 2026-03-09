@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CulTech | Power-Fi - La Révolution Énergétique Sans Fil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00D4FF;
+            --secondary: #7000FF;
+            --accent: #FF006E;
+            --dark: #0A0A0F;
+            --darker: #050508;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+        
+        /* Animated Background */
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Floating Animation */
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Glow Effects */
+        .glow-text {
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        .glow-box {
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+        }
+        .glow-purple {
+            box-shadow: 0 0 30px rgba(112, 0, 255, 0.3);
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Power Button Animation */
+        .power-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .power-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .power-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Energy Waves */
+        .energy-wave {
+            position: absolute;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            animation: wave 3s ease-out infinite;
+        }
+        @keyframes wave {
+            0% { width: 0; height: 0; opacity: 1; }
+            100% { width: 300px; height: 300px; opacity: 0; }
+        }
+        
+        /* FAQ Accordion */
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .faq-item.active .faq-content {
+            max-height: 500px;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Particle Canvas */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00D4FF 0%, #7000FF 50%, #FF006E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Navigation Blur */
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.8);
+        }
+        
+        /* Card Hover */
+        .tech-card {
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+        
+        /* Pulse Animation for Power Icon */
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        
+        /* Dakar Map Pattern */
+        .dakar-pattern {
+            background-image: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, rgba(112, 0, 255, 0.1) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Particle Canvas -->
+    <canvas id="particles"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-blur border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-600 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <span class="font-display text-2xl font-bold tracking-tighter">CulTech</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#technology" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">Technologie</a>
+                    <a href="#features" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">Fonctionnalités</a>
+                    <a href="#safety" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">Sécurité</a>
+                    <a href="#faq" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">FAQ</a>
+                    <a href="#contact" class="px-6 py-2 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transition-all transform hover:scale-105">
+                        Nous Contacter
+                    </a>
+                </div>
+                
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-black/95 border-b border-white/10">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#technology" class="block px-3 py-2 text-gray-300 hover:text-cyan-400">Technologie</a>
+                <a href="#features" class="block px-3 py-2 text-gray-300 hover:text-cyan-400">Fonctionnalités</a>
+                <a href="#safety" class="block px-3 py-2 text-gray-300 hover:text-cyan-400">Sécurité</a>
+                <a href="#faq" class="block px-3 py-2 text-gray-300 hover:text-cyan-400">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden dakar-pattern bg-grid">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black z-0"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 text-center">
+            <div class="inline-flex items-center px-4 py-2 rounded-full glass mb-8 animate-fade-in">
+                <span class="flex h-2 w-2 rounded-full bg-cyan-400 mr-2 animate-pulse"></span>
+                <span class="text-sm text-gray-300">Innovation Made in Dakar</span>
+            </div>
+            
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight">
+                <span class="block text-white mb-2">Power-Fi</span>
+                <span class="gradient-text">L'Énergie Sans Fil</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+                La première technologie au monde permettant de recharger vos appareils 
+                <span class="text-cyan-400 font-semibold">comme vous activez le Wi-Fi</span>. 
+                Une simple pression dans vos notifications, et votre batterie se régénère.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                <button class="power-btn group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full text-lg font-bold text-white shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all transform hover:scale-105 overflow-hidden">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        Découvrir Power-Fi
+                    </span>
+                </button>
+                <button class="px-8 py-4 rounded-full border border-white/20 text-white hover:bg-white/5 transition-all flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Voir la Démo
+                </button>
+            </div>
+            
+            <!-- Interactive Power-Fi Visualization -->
+            <div class="relative max-w-2xl mx-auto float">
+                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-3xl rounded-full"></div>
+                <div class="relative glass rounded-3xl p-8 glow-box">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="text-xs text-gray-500 uppercase tracking-widest">Notification Center</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:bg-white/10 transition-all group" onclick="togglePowerFi(this)">
+                            <div class="flex items-center gap-4">
+                                <div class="relative">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center" id="powerIcon">
+                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="absolute inset-0 rounded-xl border-2 border-cyan-400 opacity-0 transition-opacity" id="pulseRing"></div>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg">Power-Fi</h3>
+                                    <p class="text-sm text-gray-400" id="powerStatus">Appuyez pour activer la charge</p>
+                                </div>
+                            </div>
+                            <div class="w-14 h-8 rounded-full bg-gray-700 relative transition-colors duration-300" id="toggleBg">
+                                <div class="absolute left-1 top-1 w-6 h-6 rounded-full bg-white transition-transform duration-300" id="toggleDot"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mt-4 opacity-50 transition-opacity duration-500" id="chargingStats">
+                            <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                                <div class="text-2xl font-bold text-cyan-400" id="batteryLevel">0%</div>
+                                <div class="text-xs text-gray-500">Batterie</div>
+                            </div>
+                            <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                                <div class="text-2xl font-bold text-purple-400" id="chargingSpeed">0W</div>
+                                <div class="text-xs text-gray-500">Puissance</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Energy Waves -->
+                <div class="absolute -right-20 top-1/2 transform -translate-y-1/2 hidden" id="energyWaves">
+                    <div class="energy-wave" style="animation-delay: 0s;"></div>
+                    <div class="energy-wave" style="animation-delay: 1s;"></div>
+                    <div class="energy-wave" style="animation-delay: 2s;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="technology" class="relative py-32 bg-black overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <div class="inline-block px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-semibold">
+                        Technologie Breakthrough
+                    </div>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold leading-tight">
+                        Une Puce Révolutionnaire <br>
+                        <span class="gradient-text">Intégrée Nativement</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed">
+                        Power-Fi repose sur une puce propriétaire miniaturisée qui se fond dans l'architecture 
+                        même de vos appareils. Contrairement aux chargeurs sans fil traditionnels, 
+                        aucun accessoire externe n'est nécessaire.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 rounded-xl glass hover:bg-white/5 transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-1">Architecture SoC</h3>
+                                <p class="text-gray-400 text-sm">Intégration directe sur le chipset principal pour une efficacité maximale</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 rounded-xl glass hover:bg-white/5 transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-1">Détection d'Énergie Ambiante</h3>
+                                <p class="text-gray-400 text-sm">Scan intelligent des sources d'énergie disponibles dans un rayon de 15 mètres</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 rounded-xl glass hover:bg-white/5 transition-colors">
+                            <div class="w-12 h-12 rounded-lg bg-pink-500/20 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg mb-1">Compatibilité Universelle</h3>
+                                <p class="text-gray-400 text-sm">Smartphones, tablettes, laptops et objets connectés</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/30 to-purple-500/30 blur-3xl rounded-full"></div>
+                    <div class="relative glass rounded-3xl p-8 glow-purple">
+                        <div class="aspect-square rounded-2xl bg-gradient-to-br from-gray-900 to-black relative overflow-hidden">
+                            <!-- Animated Chip Visualization -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-48 h-48 relative">
+                                    <div class="absolute inset-0 border-2 border-cyan-500/30 rounded-lg animate-spin-slow" style="animation-duration: 10s;"></div>
+                                    <div class="absolute inset-4 border-2 border-purple-500/30 rounded-lg animate-spin-slow" style="animation-duration: 15s; animation-direction: reverse;"></div>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-24 h-24 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center shadow-2xl">
+                                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <!-- Circuit Lines -->
+                                    <div class="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent"></div>
+                                    <div class="absolute left-0 top-1/2 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Floating Labels -->
+                            <div class="absolute top-4 left-4 glass px-3 py-1 rounded-full text-xs text-cyan-400">Nanotech Receiver</div>
+                            <div class="absolute bottom-4 right-4 glass px-3 py-1 rounded-full text-xs text-purple-400">5nm Process</div>
+                        </div>
+                        
+                        <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <div class="text-2xl font-bold text-white">15m</div>
+                                <div class="text-xs text-gray-500">Portée</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-white">50W</div>
+                                <div class="text-xs text-gray-500">Max Power</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-white">98%</div>
+                                <div class="text-xs text-gray-500">Efficacité</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="features" class="relative py-32 bg-gradient-to-b from-black to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Comment ça marche ?</h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Une expérience utilisateur simplifiée à l'extrême. 
+                    Trois étapes pour une charge illimitée.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="tech-card glass rounded-2xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center mb-6 text-2xl font-bold">01</div>
+                    <h3 class="font-display text-xl font-bold mb-4">Activez Power-Fi</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Glissez votre panneau de notifications et appuyez sur l'icône Power-Fi, 
+                        exactement comme vous activez le Bluetooth ou le Wi-Fi.
+                    </p>
+                    <div class="mt-6 flex items-center text-cyan-400 text-sm font-semibold">
+                        <span>Simplicité extrême</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="tech-card glass rounded-2xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center mb-6 text-2xl font-bold">02</div>
+                    <h3 class="font-display text-xl font-bold mb-4">Détection Auto</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Votre appareil scanne automatiquement les émetteurs Power-Fi à proximité 
+                        et se connecte à la source la plus puissante disponible.
+                    </p>
+                    <div class="mt-6 flex items-center text-purple-400 text-sm font-semibold">
+                        <span>Connexion instantanée</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="tech-card glass rounded-2xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl group-hover:bg-green-500/20 transition-all"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center mb-6 text-2xl font-bold">03</div>
+                    <h3 class="font-display text-xl font-bold mb-4">Charge Sécurisée</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        La charge commence immédiatement avec notre système Safe-by-Design. 
+                        Votre batterie se régénère sans fil, en toute sécurité.
+                    </p>
+                    <div class="mt-6 flex items-center text-green-400 text-sm font-semibold">
+                        <span>Safe by Design</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Safety Section -->
+    <section id="safety" class="relative py-32 bg-black overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%2300D4FF\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="order-2 lg:order-1">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-green-500/20 to-cyan-500/20 blur-3xl rounded-full"></div>
+                        <div class="relative glass rounded-3xl p-8 border border-green-500/20">
+                            <div class="flex items-center justify-center mb-8">
+                                <div class="relative">
+                                    <div class="w-32 h-32 rounded-full border-4 border-green-500/30 flex items-center justify-center">
+                                        <div class="w-24 h-24 rounded-full border-4 border-green-400/50 flex items-center justify-center animate-pulse">
+                                            <svg class="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full animate-ping"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 rounded-xl bg-white/5">
+                                    <span class="text-sm text-gray-400">Température</span>
+                                    <span class="text-green-400 font-mono">Optimal ✓</span>
+                                </div>
+                                <div class="flex items-center justify-between p-4 rounded-xl bg-white/5">
+                                    <span class="text-sm text-gray-400">Voltage</span>
+                                    <span class="text-green-400 font-mono">Stabilisé ✓</span>
+                                </div>
+                                <div class="flex items-center justify-between p-4 rounded-xl bg-white/5">
+                                    <span class="text-sm text-gray-400">Radiation</span>
+                                    <span class="text-green-400 font-mono">Nulle ✓</span>
+                                </div>
+                                <div class="flex items-center justify-between p-4 rounded-xl bg-white/5">
+                                    <span class="text-sm text-gray-400">Cryptage</span>
+                                    <span class="text-green-400 font-mono">AES-256 ✓</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-1 lg:order-2 space-y-8">
+                    <div class="inline-block px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-semibold">
+                        Safe by Design™
+                    </div>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold leading-tight">
+                        La Sécurité Avant Tout<br>
+                        <span class="text-green-400">Par Construction</span>
+                    </h2>
+                    <p class="text-gray-400 text-lg leading-relaxed">
+                        Power-Fi intègre une architecture de sécurité multicouche qui surveille 
+                        en temps réel chaque paramètre de charge. Notre technologie est conforme 
+                        aux normes internationales les strictes.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div class="text-3xl font-bold text-green-400 mb-1">0</div>
+                            <div class="text-sm text-gray-500">Incident depuis le lancement</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div class="text-3xl font-bold text-cyan-400 mb-1">24/7</div>
+                            <div class="text-sm text-gray-500">Monitoring actif</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div class="text-3xl font-bold text-purple-400 mb-1">ISO</div>
+                            <div class="text-sm text-gray-500">Certifié 27001</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                            <div class="text-3xl font-bold text-pink-400 mb-1">100%</div>
+                            <div class="text-sm text-gray-500">Contrôle qualité</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="relative py-32 bg-gradient-to-b from-gray-900 to-black">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Questions Fréquentes</h2>
+                <p class="text-gray-400">Tout ce que vous devez savoir sur Power-Fi</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="faq-item glass rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/5 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-lg pr-4">Comment Power-Fi diffère-t-il de la charge sans fil Qi ?</span>
+                        <svg class="faq-icon w-5 h-5 text-cyan-400 transform transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6">
+                        <p class="text-gray-400 pb-5 leading-relaxed">
+                            Contrairement au Qi qui nécessite un contact direct avec un pad de charge, 
+                            Power-Fi fonctionne à distance (jusqu'à 15 mètres) et ne nécessite aucun 
+                            accessoire externe. La puce est intégrée directement dans l'appareil, 
+                            permettant une charge véritablement sans fil et omnidirectionnelle.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item glass rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/5 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-lg pr-4">Est-ce que Power-Fi est dangereux pour la santé ?</span>
+                        <svg class="faq-icon w-5 h-5 text-cyan-400 transform transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6">
+                        <p class="text-gray-400 pb-5 leading-relaxed">
+                            Absolument pas. Power-Fi utilise une technologie de transmission d'énergie 
+                            par ondes millimétriques dans des gammes de fréquences sécurisées et 
+                            réglementées. Notre système Safe-by-Design inclut des capteurs qui 
+                            arrêtent immédiatement la transmission si un obstacle organique est détecté 
+                            dans le rayon de charge.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item glass rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/5 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-lg pr-4">Quels appareils sont compatibles Power-Fi ?</span>
+                        <svg class="faq-icon w-5 h-5 text-cyan-400 transform transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6">
+                        <p class="text-gray-400 pb-5 leading-relaxed">
+                            Power-Fi est compatible avec tous les smartphones, tablettes et ordinateurs 
+                            équipés de notre puce. Nous travaillons actuellement avec les principaux 
+                            fabricants mondiaux pour intégrer nativement Power-Fi dans leurs prochains 
+                            modèles. Des adaptateurs sont également disponibles pour les appareils existants.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item glass rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/5 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-lg pr-4">Où puis-je trouver des émetteurs Power-Fi ?</span>
+                        <svg class="faq-icon w-5 h-5 text-cyan-400 transform transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6">
+                        <p class="text-gray-400 pb-5 leading-relaxed">
+                            Les émetteurs Power-Fi sont déployés progressivement dans les espaces publics, 
+                            hôtels, aéroports et centres commerciaux à Dakar et bientôt dans toute l'Afrique. 
+                            Vous pouvez également installer un émetteur domestique pour couvrir votre domicile.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="faq-item glass rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/5 transition-colors" onclick="toggleFaq(this)">
+                        <span class="font-semibold text-lg pr-4">Quelle est l'autonomie de la batterie avec Power-Fi ?</span>
+                        <svg class="faq-icon w-5 h-5 text-cyan-400 transform transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6">
+                        <p class="text-gray-400 pb-5 leading-relaxed">
+                            Avec Power-Fi activé dans une zone couverte, votre appareil maintient 
+                            constamment sa charge entre 80% et 100%, prolongeant effectivement 
+                            l'autonomie illimitée tant que vous restez dans la zone de couverture. 
+                            La charge intelligente préserve également la santé de votre batterie à long terme.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative py-32 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass rounded-3xl p-8 md:p-16 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 blur-3xl rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
+                
+                <div class="grid md:grid-cols-2 gap-12 relative z-10">
+                    <div>
+                        <h2 class="font-display text-4xl font-bold mb-6">Prêt pour l'ère Power-Fi ?</h2>
+                        <p class="text-gray-400 mb-8 text-lg">
+                            Rejoignez la révolution énergétique. Contactez-nous pour des démonstrations, 
+                            des partenariats ou pour intégrer Power-Fi à vos appareils.
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-semibold">CulTech Headquarters</div>
+                                    <div class="text-sm text-gray-400">Dakar, Sénégal</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-semibold">Email</div>
+                                    <div class="text-sm text-gray-400">contact@cultech.sn</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form class="space-y-4" onsubmit="event.preventDefault(); alert('Message envoyé ! Nous vous contacterons bientôt.');">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" placeholder="Prénom" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors">
+                            <input type="text" placeholder="Nom" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors">
+                        </div>
+                        <input type="email" placeholder="Email" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors">
+                        <select class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-gray-400 focus:outline-none focus:border-cyan-400 transition-colors">
+                            <option>Intégrateur (OEM)</option>
+                            <option>Développeur</option>
+                            <option>Investisseur</option>
+                            <option>Particulier</option>
+                        </select>
+                        <textarea placeholder="Votre message..." rows="4" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"></textarea>
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl font-bold text-white hover:shadow-lg hover:shadow-cyan-500/25 transition-all transform hover:scale-[1.02]">
+                            Envoyer le Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-600 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="font-display text-xl font-bold">CulTech</span>
+                    </div>
+                    <p class="text-gray-500 text-sm max-w-sm">
+                        Pionniers de l'énergie sans fil en Afrique. 
+                        Power-Fi redéfinit la façon dont nous interagissons avec la technologie.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produit</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Power-Fi Chip</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Émetteurs</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">SDK Développeurs</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Certification</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Entreprise</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">À propos</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Carrières</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Presse</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-gray-600 text-sm">
+                    © 2026 CulTech. Tous droits réservés. Dakar, Sénégal.
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" class="text-gray-600 hover:text-cyan-400 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-cyan-400 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-cyan-400 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Particle System
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random() * 0.5;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            
+            draw() {
+                ctx.fillStyle = `rgba(0, 212, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+        
+        // Power-Fi Toggle Interaction
+        let isPowerOn = false;
+        let chargingInterval;
+        
+        function togglePowerFi(element) {
+            isPowerOn = !isPowerOn;
+            const toggleBg = document.getElementById('toggleBg');
+            const toggleDot = document.getElementById('toggleDot');
+            const powerStatus = document.getElementById('powerStatus');
+            const pulseRing = document.getElementById('pulseRing');
+            const chargingStats = document.getElementById('chargingStats');
+            const energyWaves = document.getElementById('energyWaves');
+            const batteryLevel = document.getElementById('batteryLevel');
+            const chargingSpeed = document.getElementById('chargingSpeed');
+            
+            if (isPowerOn) {
+                toggleBg.classList.remove('bg-gray-700');
+                toggleBg.classList.add('bg-cyan-500');
+                toggleDot.style.transform = 'translateX(24px)';
+                powerStatus.textContent = 'Recherche de source d\'énergie...';
+                pulseRing.classList.remove('opacity-0');
+                pulseRing.classList.add('pulse-ring');
+                chargingStats.classList.remove('opacity-50');
+                energyWaves.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    powerStatus.textContent = 'Connecté • Charge en cours';
+                    powerStatus.classList.add('text-cyan-400');
+                    
+                    let level = 45;
+                    chargingInterval = setInterval(() => {
+                        if (level < 100) {
+                            level += 1;
+                            batteryLevel.textContent = level + '%';
+                            chargingSpeed.textContent = (15 + Math.random() * 10).toFixed(1) + 'W';
+                        } else {
+                            powerStatus.textContent = 'Charge complète';
+                            clearInterval(chargingInterval);
+                        }
+                    }, 100);
+                }, 1500);
+            } else {
+                toggleBg.classList.add('bg-gray-700');
+                toggleBg.classList.remove('bg-cyan-500');
+                toggleDot.style.transform = 'translateX(0)';
+                powerStatus.textContent = 'Appuyez pour activer la charge';
+                powerStatus.classList.remove('text-cyan-400');
+                pulseRing.classList.add('opacity-0');
+                pulseRing.classList.remove('pulse-ring');
+                chargingStats.classList.add('opacity-50');
+                energyWaves.classList.add('hidden');
+                clearInterval(chargingInterval);
+                batteryLevel.textContent = '45%';
+                chargingSpeed.textContent = '0W';
+            }
+        }
+        
+        // FAQ Toggle
+        function toggleFaq(button) {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(faq => {
+                faq.classList.remove('active');
+            });
+            
+            // Open clicked if wasn't active
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+        
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('mobileMenu').classList.add('hidden');
+                }
+            });
+        });
+        
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.from('.tech-card', {
+            scrollTrigger: {
+                trigger: '#features',
+                start: 'top 80%',
+            },
+            y: 100,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power3.out'
+        });
+        
+        gsap.from('.faq-item', {
+            scrollTrigger: {
+                trigger: '#faq',
+                start: 'top 80%',
+            },
+            x: -50,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power2.out'
+        });
+        
+        // Navigation scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.classList.add('shadow-lg');
+                nav.classList.add('shadow-cyan-500/10');
+            } else {
+                nav.classList.remove('shadow-lg');
+                nav.classList.remove('shadow-cyan-500/10');
+            }
+            
+            lastScroll = currentScroll;
+        });
+    </script>
+</body>
+</html>
