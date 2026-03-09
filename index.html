@@ -6,7 +6,7 @@
     <title>CulTech · Power-Fi · Énergie sans fil</title>
     <!-- Tailwind + fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configuration Tailwind personnalisée pour le thème sombre -->
+    <!-- Configuration Tailwind personnalisée -->
     <script>
         tailwind.config = {
             theme: {
@@ -139,7 +139,7 @@
             100% { transform: translateY(0px); }
         }
 
-        /* Schéma technique - puce Power-Fi */
+        /* Schéma technique */
         .chip-diagram {
             background: #1A1A2A;
             border-radius: 28px;
@@ -286,7 +286,7 @@
         </div>
     </nav>
 
-    <!-- HERO - Nouvelle approche : Power-Fi dans les notifications -->
+    <!-- HERO - Power-Fi capte l'énergie électrique ambiante -->
     <section class="relative pt-36 pb-28 md:pt-44 md:pb-36 overflow-hidden">
         <!-- Grille de fond -->
         <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%2300D4FF\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
@@ -299,10 +299,10 @@
                     Innovation Dakar
                 </span>
                 <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-                    Power-Fi<span class="text-primary">.</span><br>Comme le Wi-Fi,<br>dans vos notifications
+                    Power-Fi<span class="text-primary">.</span><br>L'énergie est partout,<br>captez-la.
                 </h1>
                 <p class="text-xl text-gray-400 max-w-xl">
-                    Activez Power-Fi directement depuis le panneau de notifications. Votre téléphone se connecte automatiquement à une source d'énergie ambiante et commence à charger, sans aucun boîtier ni accessoire.
+                    Activez Power-Fi dans vos notifications. La puce capte instantanément l'énergie électrique qui traverse les équipements autour de vous : compteur, régulateur, unité centrale, transformateur… et recharge votre téléphone, PC ou tablette, sans aucune borne spécifique.
                 </p>
                 <div class="flex flex-wrap gap-5 pt-4">
                     <button class="power-btn px-8 py-4 rounded-full text-lg font-semibold flex items-center gap-2">
@@ -360,7 +360,7 @@
                             </div>
                             <div>
                                 <div class="font-semibold text-lg">Power‑Fi</div>
-                                <div id="powerStatus" class="text-sm text-gray-300">Appuyez pour charger</div>
+                                <div id="powerStatus" class="text-sm text-gray-300">Appuyez pour capter l'énergie</div>
                             </div>
                         </div>
                         <!-- toggle -->
@@ -377,17 +377,17 @@
                         </div>
                         <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
                             <div class="text-2xl font-bold text-secondary" id="chargingSpeed">0 W</div>
-                            <div class="text-xs text-gray-400">puissance</div>
+                            <div class="text-xs text-gray-400">puissance captée</div>
                         </div>
                     </div>
                     
-                    <p class="text-xs text-gray-500 text-center mt-4">Activez Power-Fi et rechargez sans fil, sans plaque</p>
+                    <p class="text-xs text-gray-500 text-center mt-4">Power-Fi capte l'énergie des équipements électriques à proximité</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SCHÉMA TECHNIQUE (d'après l'image) -->
+    <!-- SCHÉMA TECHNIQUE -->
     <section id="tech" class="py-24 bg-darker/50">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -403,11 +403,11 @@
                     <div class="space-y-4">
                         <div class="diagram-item">
                             <span class="text-primary font-bold">Antenne Phased Array</span>
-                            <span class="block text-xs text-gray-400">Configurable (4 à 32 éléments)</span>
+                            <span class="block text-xs text-gray-400">Configurable (4 à 32 éléments) - capte l'énergie ambiante</span>
                         </div>
                         <div class="diagram-item">
                             <span class="text-primary font-bold">Redresseur RF+DC</span>
-                            <span class="block text-xs text-gray-400">jusqu'à 100 W</span>
+                            <span class="block text-xs text-gray-400">jusqu'à 100 W - convertit l'énergie captée</span>
                         </div>
                         <div class="diagram-item">
                             <span class="text-primary font-bold">PMIC Intelligent</span>
@@ -441,39 +441,51 @@
                 
                 <!-- Note centrale -->
                 <div class="mt-6 text-center text-gray-300 text-sm border-t border-white/10 pt-4">
-                    Scalable de 5 W à 100 W • Baseé sur technologies GaN 2026
+                    Capture d'énergie sur tous récepteurs électriques (compteurs, régulateurs, unités centrales...)
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FONCTIONNALITÉS : 3 étapes -->
+    <!-- FONCTIONNALITÉS : avec la nouvelle explication -->
     <section id="features" class="py-28">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                <span class="badge-tech">✨ Simplicité absolue</span>
+                <span class="badge-tech">✨ Puissance invisible</span>
                 <h2 class="font-display text-4xl md:text-5xl font-bold mt-6">Comment ça marche ?</h2>
-                <p class="text-gray-400 text-xl max-w-2xl mx-auto">Activez, connectez, chargez. Aussi simple que le Wi‑Fi.</p>
+                <p class="text-gray-400 text-xl max-w-3xl mx-auto">Power-Fi capte l'énergie électrique qui circule déjà autour de vous.</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- 1 -->
                 <div class="glass-card rounded-4xl p-8 text-center hover:-translate-y-2 transition-transform">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">1</div>
                     <h3 class="text-2xl font-bold mb-3">Activez Power-Fi</h3>
-                    <p class="text-gray-400">Dans le panneau de notifications, comme pour le Wi‑Fi ou le Bluetooth.</p>
+                    <p class="text-gray-400">Dans le panneau de notifications, comme pour le Wi‑Fi. La puce s'éveille.</p>
                 </div>
                 <!-- 2 -->
                 <div class="glass-card rounded-4xl p-8 text-center hover:-translate-y-2 transition-transform">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">2</div>
-                    <h3 class="text-2xl font-bold mb-3">Connexion auto</h3>
-                    <p class="text-gray-400">La puce détecte la source d'énergie la plus proche et s'y connecte instantanément.</p>
+                    <h3 class="text-2xl font-bold mb-3">Capture d'énergie</h3>
+                    <p class="text-gray-400">L'antenne capte l'énergie électrique des équipements à proximité : compteur, régulateur, unité centrale, transformateur…</p>
                 </div>
                 <!-- 3 -->
                 <div class="glass-card rounded-4xl p-8 text-center hover:-translate-y-2 transition-transform">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary text-white text-3xl font-bold flex items-center justify-center mx-auto mb-6 shadow-md">3</div>
-                    <h3 class="text-2xl font-bold mb-3">Charge sans fil</h3>
-                    <p class="text-gray-400">La recharge commence immédiatement, sans aucun boîtier ni accessoire.</p>
+                    <h3 class="text-2xl font-bold mb-3">Recharge sans fil</h3>
+                    <p class="text-gray-400">L'énergie est convertie et votre appareil se recharge, sans aucun contact ni borne dédiée.</p>
                 </div>
+            </div>
+            
+            <!-- Éléments supplémentaires -->
+            <div class="mt-16 glass p-8 rounded-3xl max-w-3xl mx-auto text-center">
+                <div class="flex flex-wrap justify-center gap-6 text-sm">
+                    <span class="px-4 py-2 bg-white/5 rounded-full border border-white/10">🏭 Compteur électrique</span>
+                    <span class="px-4 py-2 bg-white/5 rounded-full border border-white/10">⚡ Régulateur de tension</span>
+                    <span class="px-4 py-2 bg-white/5 rounded-full border border-white/10">🖥️ Unité centrale</span>
+                    <span class="px-4 py-2 bg-white/5 rounded-full border border-white/10">🔋 Onduleur</span>
+                    <span class="px-4 py-2 bg-white/5 rounded-full border border-white/10">📡 Transformateur</span>
+                </div>
+                <p class="text-gray-300 mt-4">Tous ces équipements deviennent des sources d'énergie pour Power-Fi.</p>
             </div>
         </div>
     </section>
@@ -484,7 +496,7 @@
             <div>
                 <span class="badge-tech">🛡️ Safe by Design™</span>
                 <h2 class="font-display text-4xl md:text-5xl font-bold mt-5">Sécurité multicouche</h2>
-                <p class="text-gray-400 text-lg mt-6">Notre puce intègre des circuits de sécurité dédiés : arrêt automatique à 100%, gestion thermique, cryptage AES-256 des communications.</p>
+                <p class="text-gray-400 text-lg mt-6">La capture d'énergie est parfaitement sûre : les circuits de sécurité intégrés arrêtent automatiquement la charge en cas d'anomalie (température, surtension, corps étranger).</p>
                 <div class="grid grid-cols-2 gap-4 mt-10">
                     <div class="glass p-5 rounded-3xl"><span class="font-bold text-2xl text-primary">0</span> <span class="text-gray-400">incident</span></div>
                     <div class="glass p-5 rounded-3xl"><span class="font-bold text-2xl text-primary">24/7</span> <span class="text-gray-400">monitoring</span></div>
@@ -511,32 +523,32 @@
                 <!-- item 1 -->
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Dois-je acheter un boîtier ou une plaque ?</span>
+                        <span>Power-Fi a-t-il besoin d'une borne spéciale pour fonctionner ?</span>
                         <svg class="chevron-icon w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <div class="faq-answer">Non, Power-Fi est intégré directement dans le téléphone. Il suffit d'activer la fonction dans les notifications pour capter l'énergie ambiante. Aucun accessoire externe n'est nécessaire.</div>
+                    <div class="faq-answer">Non. Power-Fi capte directement l'énergie électrique présente dans l'environnement : compteurs, régulateurs, unités centrales, transformateurs, etc. Aucune borne ou accessoire n'est requis.</div>
                 </div>
                 <!-- item 2 -->
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Comment mon téléphone capte-t-il l'énergie ?</span>
+                        <span>Est-ce que tous les appareils électriques peuvent être source d'énergie ?</span>
                         <svg class="chevron-icon w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <div class="faq-answer">La puce Power-Fi utilise une antenne phased array pour capter les ondes électromagnétiques ambiantes (émises par les bornes spéciales déployées dans les villes) et les convertir en électricité via un redresseur RF+DC intégré.</div>
+                    <div class="faq-answer">Oui, tout équipement parcouru par un courant électrique (compteur, onduleur, régulateur, unité centrale, etc.) émet un champ que la puce Power-Fi peut capter et convertir.</div>
                 </div>
                 <!-- item 3 -->
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Où sont disponibles les sources d'énergie ?</span>
+                        <span>La charge est-elle rapide ?</span>
                         <svg class="chevron-icon w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <div class="faq-answer">À Dakar, plus de 200 bornes sont déjà actives. Le déploiement s'étend à Abidjan, Casablanca, Lagos et Johannesburg. Chaque borne crée une zone de charge dans un rayon de 15 mètres.</div>
+                    <div class="faq-answer">La puissance captée dépend des sources disponibles, mais notre puce peut délivrer jusqu'à 100 W en environnement dense, de quoi recharger un smartphone aussi vite qu'un chargeur filaire.</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTACT avec formulaire amélioré et WhatsApp -->
+    <!-- CONTACT avec formulaire et WhatsApp -->
     <section id="contact" class="py-28 bg-darker/50">
         <div class="max-w-6xl mx-auto px-6">
             <div class="glass rounded-4xl p-12 md:p-16">
@@ -641,7 +653,7 @@
             powerOn = !powerOn;
             toggle.classList.toggle('active', powerOn);
             if (powerOn) {
-                powerStatus.innerText = 'Connecté · Charge en cours';
+                powerStatus.innerText = 'Capture d\'énergie · Charge en cours';
                 statsDiv.style.opacity = '1';
                 let level = 45;
                 clearInterval(interval);
@@ -656,7 +668,7 @@
                     }
                 }, 150);
             } else {
-                powerStatus.innerText = 'Appuyez pour charger';
+                powerStatus.innerText = 'Appuyez pour capter l\'énergie';
                 statsDiv.style.opacity = '0.5';
                 batterySpan.innerText = '45%';
                 speedSpan.innerText = '0 W';
