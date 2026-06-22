@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power-Fi — Expérience Complète</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#020810;
+  --surface:#060f1e;
+  --card:#091526;
+  --border:#0d2040;
+  --cyan:#00e5ff;
+  --blue:#1565c0;
+  --blue2:#2979ff;
+  --violet:#7c4dff;
+  --green:#00e676;
+  --amber:#ffab00;
+  --red:#ff1744;
+  --white:#e8f0fe;
+  --dim:#2a4060;
+  --dim2:#4a6080;
+  --mono:'Share Tech Mono',monospace;
+  --orb:'Orbitron',sans-serif;
+  --sans:'Exo 2',sans-serif;
+}
+
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:var(--sans);overflow-x:hidden;}
+
+/* ═══════════════════════════════ NAV ═══════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 32px;
+  background:rgba(2,8,16,0.92);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.nav-logo{font-family:var(--orb);font-size:1.1rem;color:var(--cyan);letter-spacing:4px;}
+.nav-logo span{color:var(--blue2);}
+.nav-links{display:flex;gap:6px;}
+.nav-links a{
+  font-family:var(--mono);font-size:.65rem;color:var(--dim2);
+  padding:6px 14px;border:1px solid var(--border);
+  text-decoration:none;letter-spacing:2px;
+  transition:color .2s,border-color .2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan);border-color:var(--cyan);}
+.nav-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.65rem;color:var(--green);}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.4s step-end infinite;}
+
+/* ═══════════════════════════════ HERO ═══════════════════════════════ */
+#hero{
+  height:100vh;position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;}
+.hero-content{position:relative;z-index:2;text-align:center;}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:.7rem;color:var(--cyan);
+  letter-spacing:5px;margin-bottom:20px;opacity:.8;
+}
+.hero-title{
+  font-family:var(--orb);font-size:clamp(2.8rem,8vw,6rem);
+  font-weight:900;line-height:1;
+  background:linear-gradient(135deg,var(--cyan) 0%,var(--blue2) 50%,var(--violet) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:12px;
+}
+.hero-sub{
+  font-family:var(--sans);font-size:1rem;font-weight:300;
+  color:rgba(232,240,254,.5);letter-spacing:2px;margin-bottom:40px;
+}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:2px;
+  padding:12px 24px;border:1px solid;cursor:pointer;
+  text-decoration:none;transition:all .25s;
+}
+.btn-primary{color:var(--bg);background:var(--cyan);border-color:var(--cyan);}
+.btn-primary:hover{background:transparent;color:var(--cyan);}
+.btn-ghost{color:var(--dim2);background:transparent;border-color:var(--border);}
+.btn-ghost:hover{color:var(--white);border-color:var(--dim2);}
+
+.hero-metrics{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;gap:40px;z-index:2;
+}
+.hm{text-align:center;}
+.hm-val{font-family:var(--orb);font-size:1.4rem;color:var(--cyan);}
+.hm-lbl{font-family:var(--mono);font-size:.6rem;color:var(--dim2);letter-spacing:2px;margin-top:4px;}
+
+/* ═══════════════════════════════ SECTIONS ═══════════════════════════════ */
+section{padding:80px 24px;max-width:1200px;margin:0 auto;}
+.sec-label{
+  font-family:var(--mono);font-size:.65rem;color:var(--cyan);
+  letter-spacing:4px;margin-bottom:8px;
+}
+.sec-title{
+  font-family:var(--orb);font-size:clamp(1.4rem,4vw,2rem);
+  font-weight:700;color:var(--white);margin-bottom:40px;
+}
+.sec-divider{width:60px;height:2px;background:var(--cyan);margin-bottom:40px;}
+
+/* ═══════════════════════════════ 3D CHIP VIEWER ═══════════════════════════════ */
+#viewer-wrap{
+  display:grid;grid-template-columns:1fr 320px;gap:24px;
+  align-items:start;
+}
+@media(max-width:768px){#viewer-wrap{grid-template-columns:1fr;}}
+#chip-canvas-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  position:relative;aspect-ratio:16/9;overflow:hidden;
+}
+#chip-canvas{width:100%;height:100%;display:block;}
+.canvas-overlay{
+  position:absolute;top:0;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:14px 18px;pointer-events:none;
+}
+.ov-badge{
+  font-family:var(--mono);font-size:.6rem;color:var(--cyan);
+  border:1px solid rgba(0,229,255,.3);padding:4px 10px;letter-spacing:2px;
+  background:rgba(0,229,255,.05);
+}
+.ov-controls{
+  position:absolute;bottom:14px;right:14px;
+  display:flex;gap:8px;
+}
+.ov-btn{
+  font-family:var(--mono);font-size:.6rem;color:var(--dim2);
+  border:1px solid var(--border);padding:5px 10px;cursor:pointer;
+  background:rgba(6,15,30,.8);transition:all .2s;letter-spacing:1px;
+}
+.ov-btn:hover,.ov-btn.active{color:var(--cyan);border-color:var(--cyan);}
+
+.chip-info{display:flex;flex-direction:column;gap:12px;}
+.info-card{
+  background:var(--card);border:1px solid var(--border);
+  border-left:2px solid var(--cyan);padding:16px;
+}
+.ic-label{font-family:var(--mono);font-size:.6rem;color:var(--dim2);letter-spacing:2px;margin-bottom:6px;}
+.ic-val{font-family:var(--orb);font-size:1rem;color:var(--white);}
+.ic-note{font-family:var(--mono);font-size:.65rem;color:var(--dim2);margin-top:4px;}
+.ic-bar{height:3px;background:var(--border);margin-top:10px;border-radius:2px;overflow:hidden;}
+.ic-fill{height:100%;border-radius:2px;transition:width 1s ease;}
+
+/* ═══════════════════════════════ RF SIMULATION ═══════════════════════════════ */
+#sim-wrap{position:relative;}
+#sim-canvas-full{
+  width:100%;height:500px;
+  background:var(--surface);border:1px solid var(--border);
+  display:block;
+}
+.sim-controls{
+  display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;
+}
+.sim-btn{
+  font-family:var(--mono);font-size:.65rem;padding:8px 16px;
+  border:1px solid var(--border);background:var(--card);color:var(--dim2);
+  cursor:pointer;letter-spacing:1px;transition:all .2s;
+}
+.sim-btn:hover,.sim-btn.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,229,255,.05);}
+.sim-stats{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:1px;background:var(--border);border:1px solid var(--border);
+  margin-top:16px;
+}
+.ss-cell{background:var(--card);padding:14px 16px;}
+.ss-key{font-family:var(--mono);font-size:.6rem;color:var(--dim2);letter-spacing:2px;margin-bottom:4px;}
+.ss-val{font-family:var(--orb);font-size:1rem;color:var(--cyan);}
+
+/* ═══════════════════════════════ FLOW ═══════════════════════════════ */
+.flow-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:0;margin-bottom:24px;
+}
+@media(max-width:768px){.flow-grid{grid-template-columns:1fr;}}
+.fg-step{
+  background:var(--card);border:1px solid var(--border);
+  padding:20px 14px;cursor:pointer;position:relative;
+  transition:transform .2s,border-color .2s;
+}
+.fg-step:hover{transform:translateY(-3px);}
+.fg-step.active{border-color:var(--cyan);}
+.fg-step::after{
+  content:'›';position:absolute;right:-10px;top:50%;
+  transform:translateY(-50%);color:var(--dim);font-size:1.2rem;z-index:2;
+}
+@media(max-width:768px){.fg-step::after{content:'↓';right:50%;bottom:-14px;top:auto;}}
+.fg-step:last-child::after{display:none;}
+.fg-num{font-family:var(--mono);font-size:.6rem;color:var(--dim2);letter-spacing:2px;margin-bottom:10px;}
+.fg-icon{font-size:1.6rem;margin-bottom:8px;display:block;}
+.fg-name{font-size:.8rem;font-weight:600;color:var(--white);margin-bottom:4px;}
+.fg-short{font-size:.68rem;color:var(--dim2);line-height:1.4;}
+.fg-bar{height:2px;margin-top:12px;}
+.s1r{border-top:2px solid var(--violet);} .s1r .fg-bar{background:var(--violet);}
+.s2r{border-top:2px solid var(--blue2);}  .s2r .fg-bar{background:var(--blue2);}
+.s3r{border-top:2px solid var(--cyan);}   .s3r .fg-bar{background:var(--cyan);}
+.s4r{border-top:2px solid var(--green);}  .s4r .fg-bar{background:var(--green);}
+.s5r{border-top:2px solid var(--amber);}  .s5r .fg-bar{background:var(--amber);}
+.s1r .fg-icon{filter:hue-rotate(200deg);}
+.flow-detail{
+  background:var(--card);border:1px solid var(--border);
+  border-left:3px solid var(--cyan);padding:24px 28px;min-height:110px;
+  transition:border-color .3s;
+}
+.fd-title{font-family:var(--mono);font-size:.75rem;color:var(--cyan);letter-spacing:2px;margin-bottom:12px;}
+.fd-body{font-size:.82rem;color:rgba(232,240,254,.7);line-height:1.75;}
+.fd-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.ftag{font-family:var(--mono);font-size:.6rem;padding:3px 10px;border:1px solid;letter-spacing:1px;}
+.ft-v{color:var(--violet);border-color:var(--violet);}
+.ft-b{color:var(--blue2);border-color:var(--blue2);}
+.ft-c{color:var(--cyan);border-color:var(--cyan);}
+.ft-g{color:var(--green);border-color:var(--green);}
+.ft-a{color:var(--amber);border-color:var(--amber);}
+
+/* ═══════════════════════════════ DASHBOARD ═══════════════════════════════ */
+.dash-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:16px;
+}
+@media(max-width:768px){.dash-grid{grid-template-columns:1fr;}}
+.dash-card{background:var(--card);border:1px solid var(--border);padding:20px;}
+.dash-card.wide{grid-column:span 2;}
+.dash-card.tall{grid-row:span 2;}
+.dc-title{font-family:var(--mono);font-size:.65rem;color:var(--dim2);letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.dc-title::before{content:'';width:6px;height:6px;background:var(--cyan);border-radius:50%;}
+
+#gauge-canvas{width:100%;height:180px;display:block;}
+#wave-canvas{width:100%;height:160px;display:block;}
+#bar-canvas{width:100%;height:160px;display:block;}
+
+.live-val{
+  font-family:var(--orb);font-size:2.2rem;color:var(--cyan);
+  text-align:center;line-height:1;margin:10px 0 4px;
+}
+.live-unit{font-family:var(--mono);font-size:.65rem;color:var(--dim2);text-align:center;letter-spacing:2px;}
+
+.temp-ring-wrap{display:flex;justify-content:center;margin:8px 0;}
+.ring-label{text-align:center;}
+.rl-val{font-family:var(--orb);font-size:1.6rem;color:var(--amber);}
+.rl-lbl{font-family:var(--mono);font-size:.6rem;color:var(--dim2);letter-spacing:2px;}
+
+.safety-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.sl-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,.2);border:1px solid var(--border);}
+.sl-name{font-family:var(--mono);font-size:.65rem;color:var(--dim2);letter-spacing:1px;}
+.sl-status{font-family:var(--mono);font-size:.6rem;color:var(--green);letter-spacing:1px;}
+.sl-status.warn{color:var(--amber);}
+
+/* ═══════════════════════════════ SPECS ═══════════════════════════════ */
+.specs-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:1px;background:var(--border);border:1px solid var(--border);
+}
+.spec-cell{background:var(--card);padding:18px 20px;}
+.sk{font-family:var(--mono);font-size:.6rem;color:var(--dim2);letter-spacing:2px;margin-bottom:6px;}
+.sv{font-family:var(--orb);font-size:1rem;color:var(--cyan);}
+.sn{font-size:.65rem;color:var(--dim2);margin-top:4px;}
+
+/* ═══════════════════════════════ UTILS ═══════════════════════════════ */
+@keyframes blink{50%{opacity:0;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .6s ease forwards;}
+
+.page-section{padding-top:100px;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">POWER<span>-Fi</span></div>
+  <div class="nav-links">
+    <a href="#hero" class="active">ACCUEIL</a>
+    <a href="#sec3d">3D</a>
+    <a href="#secsim">SIM RF</a>
+    <a href="#secflow">FLUX</a>
+    <a href="#secdash">DASHBOARD</a>
+    <a href="#secspecs">SPECS</a>
+  </div>
+  <div class="nav-status"><div class="status-dot"></div>POWER-Fi ACTIF</div>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<div id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content fade-up">
+    <div class="hero-eyebrow">TECHNOLOGIE DE RECHARGE RF NOUVELLE GÉNÉRATION</div>
+    <div class="hero-title">POWER-Fi</div>
+    <div class="hero-sub">Captez. Convertissez. Rechargez. Sans câble.</div>
+    <div class="hero-cta">
+      <a href="#sec3d" class="btn btn-primary">VOIR LA PUCE 3D</a>
+      <a href="#secsim" class="btn btn-ghost">SIMULATION RF</a>
+    </div>
+  </div>
+  <div class="hero-metrics">
+    <div class="hm"><div class="hm-val">70%</div><div class="hm-lbl">RENDEMENT</div></div>
+    <div class="hm"><div class="hm-val">3</div><div class="hm-lbl">BANDES RF</div></div>
+    <div class="hm"><div class="hm-val">2.5mm</div><div class="hm-lbl">FORMAT</div></div>
+    <div class="hm"><div class="hm-val">100mA</div><div class="hm-lbl">SORTIE MAX</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════ 3D CHIP VIEWER ══════════════════ -->
+<div class="page-section" id="sec3d">
+<section>
+  <div class="sec-label">MODULE 01</div>
+  <div class="sec-title">Visualisation 3D de la puce</div>
+  <div class="sec-divider"></div>
+  <div id="viewer-wrap">
+    <div id="chip-canvas-wrap">
+      <canvas id="chip-canvas"></canvas>
+      <div class="canvas-overlay">
+        <div class="ov-badge">POWER-Fi CHIP v1.0 // 3D VIEW</div>
+      </div>
+      <div class="ov-controls">
+        <button class="ov-btn active" onclick="setView('rotate')">AUTO</button>
+        <button class="ov-btn" onclick="setView('top')">TOP</button>
+        <button class="ov-btn" onclick="setView('side')">SIDE</button>
+        <button class="ov-btn" onclick="setView('xray')">X-RAY</button>
+      </div>
+    </div>
+    <div class="chip-info">
+      <div class="info-card">
+        <div class="ic-label">FORMAT</div>
+        <div class="ic-val">~2.5 × 2.5 mm</div>
+        <div class="ic-note">Compatible smartphones modernes</div>
+      </div>
+      <div class="info-card" style="border-left-color:var(--violet)">
+        <div class="ic-label">FRÉQUENCES</div>
+        <div class="ic-val">433 / 915 MHz · 2.4GHz</div>
+        <div class="ic-note">Bandes ISM mondiales</div>
+        <div class="ic-bar"><div class="ic-fill" style="width:85%;background:var(--violet);"></div></div>
+      </div>
+      <div class="info-card" style="border-left-color:var(--green)">
+        <div class="ic-label">RENDEMENT</div>
+        <div class="ic-val">70%</div>
+        <div class="ic-note">Pertes thermiques minimisées</div>
+        <div class="ic-bar"><div class="ic-fill" style="width:70%;background:var(--green);"></div></div>
+      </div>
+      <div class="info-card" style="border-left-color:var(--amber)">
+        <div class="ic-label">COURANT SORTIE</div>
+        <div class="ic-val">100 mA max</div>
+        <div class="ic-note">Recharge continue en fond</div>
+        <div class="ic-bar"><div class="ic-fill" style="width:60%;background:var(--amber);"></div></div>
+      </div>
+      <div class="info-card" style="border-left-color:var(--red)">
+        <div class="ic-label">PROTECTION THERMIQUE</div>
+        <div class="ic-val">−40°C → +85°C</div>
+        <div class="ic-note">Arrêt auto si T° > 40°C</div>
+        <div class="ic-bar"><div class="ic-fill" style="width:92%;background:var(--red);"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════ RF SIMULATION ══════════════════ -->
+<div class="page-section" id="secsim">
+<section>
+  <div class="sec-label">MODULE 02</div>
+  <div class="sec-title">Simulation du flux RF en temps réel</div>
+  <div class="sec-divider"></div>
+  <div id="sim-wrap">
+    <div class="sim-controls">
+      <button class="sim-btn active" onclick="setSimMode('wifi')">Wi-Fi 2.4GHz</button>
+      <button class="sim-btn" onclick="setSimMode('4g')">4G / 915MHz</button>
+      <button class="sim-btn" onclick="setSimMode('ism')">ISM 433MHz</button>
+      <button class="sim-btn" onclick="setSimMode('all')">TOUTES BANDES</button>
+      <button class="sim-btn" onclick="toggleSim()" id="sim-toggle">⏸ PAUSE</button>
+    </div>
+    <canvas id="sim-canvas-full"></canvas>
+    <div class="sim-stats">
+      <div class="ss-cell"><div class="ss-key">PUISSANCE CAPTÉE</div><div class="ss-val" id="ss-power">—</div></div>
+      <div class="ss-cell"><div class="ss-key">TENSION SORTIE</div><div class="ss-val" id="ss-volt">—</div></div>
+      <div class="ss-cell"><div class="ss-key">COURANT</div><div class="ss-val" id="ss-curr">—</div></div>
+      <div class="ss-cell"><div class="ss-key">RENDEMENT</div><div class="ss-val" id="ss-eff">—</div></div>
+      <div class="ss-cell"><div class="ss-key">FRÉQUENCE ACTIVE</div><div class="ss-val" id="ss-freq">—</div></div>
+      <div class="ss-cell"><div class="ss-key">ÉTAT BATTERIE</div><div class="ss-val" id="ss-batt">—</div></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════ FLUX INTERACTIF ══════════════════ -->
+<div class="page-section" id="secflow">
+<section>
+  <div class="sec-label">MODULE 03</div>
+  <div class="sec-title">Architecture — Flux de traitement</div>
+  <div class="sec-divider"></div>
+  <div class="flow-grid" id="flowGrid">
+    <div class="fg-step s1r" onclick="showFlow(0)">
+      <div class="fg-num">01</div><span class="fg-icon">📡</span>
+      <div class="fg-name">Captation RF</div>
+      <div class="fg-short">Antenne large bande multi-fréquences</div>
+      <div class="fg-bar"></div>
+    </div>
+    <div class="fg-step s2r" onclick="showFlow(1)">
+      <div class="fg-num">02</div><span class="fg-icon">⚡</span>
+      <div class="fg-name">Redressement</div>
+      <div class="fg-short">AC haute fréquence → tension continue</div>
+      <div class="fg-bar"></div>
+    </div>
+    <div class="fg-step s3r" onclick="showFlow(2)">
+      <div class="fg-num">03</div><span class="fg-icon">🔋</span>
+      <div class="fg-name">Tampon</div>
+      <div class="fg-short">Supercondensateur lisse les fluctuations</div>
+      <div class="fg-bar"></div>
+    </div>
+    <div class="fg-step s4r" onclick="showFlow(3)">
+      <div class="fg-num">04</div><span class="fg-icon">🛡️</span>
+      <div class="fg-name">Sécurité</div>
+      <div class="fg-short">Safe by Design — surveillance temps réel</div>
+      <div class="fg-bar"></div>
+    </div>
+    <div class="fg-step s5r" onclick="showFlow(4)">
+      <div class="fg-num">05</div><span class="fg-icon">📱</span>
+      <div class="fg-name">Injection</div>
+      <div class="fg-short">Courant régulé → batterie Li-ion</div>
+      <div class="fg-bar"></div>
+    </div>
+  </div>
+  <div class="flow-detail" id="flowDetail">
+    <div class="fd-title">// CLIQUEZ SUR UNE ÉTAPE POUR LES DÉTAILS TECHNIQUES</div>
+    <div class="fd-body">Sélectionnez une étape ci-dessus.</div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════ LIVE DASHBOARD ══════════════════ -->
+<div class="page-section" id="secdash">
+<section>
+  <div class="sec-label">MODULE 04</div>
+  <div class="sec-title">Dashboard Live — Métriques Power-Fi</div>
+  <div class="sec-divider"></div>
+  <div class="dash-grid">
+    <!-- Power gauge -->
+    <div class="dash-card">
+      <div class="dc-title">PUISSANCE RF CAPTÉE</div>
+      <canvas id="gauge-canvas"></canvas>
+    </div>
+    <!-- Waveform -->
+    <div class="dash-card wide">
+      <div class="dc-title">SIGNAL RF — FORME D'ONDE TEMPS RÉEL</div>
+      <canvas id="wave-canvas"></canvas>
+    </div>
+    <!-- Temp -->
+    <div class="dash-card">
+      <div class="dc-title">TEMPÉRATURE PUCE</div>
+      <div class="temp-ring-wrap">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#0d2040" stroke-width="8"/>
+          <circle id="temp-arc" cx="60" cy="60" r="50" fill="none" stroke="#ffab00" stroke-width="8"
+            stroke-dasharray="314" stroke-dashoffset="200" stroke-linecap="round"
+            transform="rotate(-90 60 60)" style="transition:stroke-dashoffset .5s;"/>
+          <text id="temp-val" x="60" y="65" text-anchor="middle" font-family="Orbitron" font-size="18" fill="#ffab00">28°C</text>
+        </svg>
+      </div>
+      <div class="ring-label"><div class="rl-lbl">SEUIL ARRÊT : 40°C</div></div>
+    </div>
+    <!-- Battery bar chart -->
+    <div class="dash-card">
+      <div class="dc-title">NIVEAU BATTERIE</div>
+      <canvas id="bar-canvas"></canvas>
+    </div>
+    <!-- Live values -->
+    <div class="dash-card">
+      <div class="dc-title">TENSION & COURANT</div>
+      <div class="live-val" id="live-volt">3.7V</div>
+      <div class="live-unit">TENSION SORTIE</div>
+      <div style="height:12px;"></div>
+      <div class="live-val" id="live-curr" style="color:var(--green);">82mA</div>
+      <div class="live-unit">COURANT ACTIF</div>
+    </div>
+    <!-- Safety status -->
+    <div class="dash-card">
+      <div class="dc-title">SÉCURITÉ SYSTÈME</div>
+      <ul class="safety-list">
+        <li class="sl-item"><span class="sl-name">SURCHAUFFE</span><span class="sl-status">✔ OK</span></li>
+        <li class="sl-item"><span class="sl-name">SURCHARGE</span><span class="sl-status">✔ OK</span></li>
+        <li class="sl-item"><span class="sl-name">PACEMAKER</span><span class="sl-status">✔ AUCUN</span></li>
+        <li class="sl-item"><span class="sl-name">CEM</span><span class="sl-status">✔ CONFORME</span></li>
+        <li class="sl-item"><span class="sl-name">BATTERIE 100%</span><span class="sl-status warn">⏳ 73%</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ══════════════════ SPECS ══════════════════ -->
+<div class="page-section" id="secspecs">
+<section>
+  <div class="sec-label">MODULE 05</div>
+  <div class="sec-title">Spécifications techniques complètes</div>
+  <div class="sec-divider"></div>
+  <div class="specs-grid">
+    <div class="spec-cell"><div class="sk">FRÉQUENCES</div><div class="sv">433 / 915 MHz · 2.4GHz</div><div class="sn">Bandes ISM disponibles mondialement</div></div>
+    <div class="spec-cell"><div class="sk">PUISSANCE ENTRÉE</div><div class="sv">−15 dBm → −5 dBm</div><div class="sn">Environnement faiblement rayonné inclus</div></div>
+    <div class="spec-cell"><div class="sk">TENSION SORTIE</div><div class="sv">3.3 V → 4.2 V</div><div class="sn">Compatible Li-ion & LiPo</div></div>
+    <div class="spec-cell"><div class="sk">COURANT MAX</div><div class="sv">100 mA</div><div class="sn">Recharge continue en fond</div></div>
+    <div class="spec-cell"><div class="sk">RENDEMENT</div><div class="sv">70%</div><div class="sn">Pertes thermiques minimisées</div></div>
+    <div class="spec-cell"><div class="sk">TEMPÉRATURE</div><div class="sv">−40°C → +85°C</div><div class="sn">Tous environnements d'usage</div></div>
+    <div class="spec-cell"><div class="sk">FORMAT PUCE</div><div class="sv">~2.5 × 2.5 mm</div><div class="sn">À confirmer par simulation PyPEEC</div></div>
+    <div class="spec-cell"><div class="sk">ARRÊT AUTO</div><div class="sv">100%</div><div class="sn">Protection durée de vie batterie</div></div>
+    <div class="spec-cell"><div class="sk">STOCKAGE TAMPON</div><div class="sv">Supercondensateur</div><div class="sn">Lisse les fluctuations RF</div></div>
+    <div class="spec-cell"><div class="sk">NORMES</div><div class="sv">IEC 61980-5 · Qi WPC v2.0</div><div class="sn">SAE J2954 · ISO/PAS 5474-6</div></div>
+    <div class="spec-cell"><div class="sk">PROTECTION MÉDICALE</div><div class="sv">Détection pacemaker</div><div class="sn">Désactivation automatique</div></div>
+    <div class="spec-cell"><div class="sk">ACTIVATION</div><div class="sv">1 clic</div><div class="sn">Panel notifications comme Wi-Fi/BT</div></div>
+  </div>
+</section>
+</div>
+
+<footer style="text-align:center;padding:32px;font-family:var(--mono);font-size:.6rem;color:var(--dim2);border-top:1px solid var(--border);letter-spacing:3px;">
+  POWER-Fi © 2026 — LUC DEGUENON DIGITAL — DOCUMENT CONFIDENTIEL R&D v1.0
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  HERO PARTICLES
+// ════════════════════════════════════════════════════════════
+(function(){
+  const c = document.getElementById('hero-canvas');
+  const ctx = c.getContext('2d');
+  function resize(){ c.width=window.innerWidth; c.height=window.innerHeight; }
+  resize(); window.addEventListener('resize',resize);
+
+  const pts = Array.from({length:120},()=>({
+    x:Math.random()*c.width, y:Math.random()*c.height,
+    vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+    r:Math.random()*1.5+.5,
+    col:['#00e5ff','#2979ff','#7c4dff','#00e676'][Math.floor(Math.random()*4)]
+  }));
+
+  // Waves emanating from center
+  const waves=[];
+  setInterval(()=>{ waves.push({r:0,a:1,col:'#00e5ff'}); },800);
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    const cx=c.width/2, cy=c.height/2;
+
+    // waves
+    waves.forEach((w,i)=>{
+      ctx.beginPath();
+      ctx.arc(cx,cy,w.r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(0,229,255,${w.a*.2})`;
+      ctx.lineWidth=1;
+      ctx.stroke();
+      w.r+=2; w.a-=.008;
+    });
+    for(let i=waves.length-1;i>=0;i--) if(waves[i].a<=0) waves.splice(i,1);
+
+    // connections
+    pts.forEach((p,i)=>{
+      pts.slice(i+1).forEach(q=>{
+        const d=Math.hypot(p.x-q.x,p.y-q.y);
+        if(d<120){
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle=`rgba(41,121,255,${(1-d/120)*.15})`;
+          ctx.lineWidth=.5; ctx.stroke();
+        }
+      });
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col+'55';
+      ctx.fill();
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>c.width) p.vx*=-1;
+      if(p.y<0||p.y>c.height) p.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ════════════════════════════════════════════════════════════
+//  3D CHIP — THREE.JS
+// ════════════════════════════════════════════════════════════
+(function(){
+  const wrap = document.getElementById('chip-canvas-wrap');
+  const canvas = document.getElementById('chip-canvas');
+  const W=()=>wrap.clientWidth, H=()=>wrap.clientHeight;
+
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(W(),H());
+  renderer.setClearColor(0x060f1e,1);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, W()/H(), .1, 100);
+  camera.position.set(0,2,5);
+  camera.lookAt(0,0,0);
+
+  // Lights
+  scene.add(new THREE.AmbientLight(0x112244, 1.5));
+  const dl = new THREE.DirectionalLight(0x00e5ff, 2);
+  dl.position.set(2,3,2); scene.add(dl);
+  const dl2 = new THREE.DirectionalLight(0x7c4dff, 1.5);
+  dl2.position.set(-3,-1,-2); scene.add(dl2);
+  const dl3 = new THREE.DirectionalLight(0x2979ff, 1);
+  dl3.position.set(0,-3,3); scene.add(dl3);
+
+  // Chip group
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // Main chip body
+  const bodyGeo = new THREE.BoxGeometry(2,0.15,2);
+  const bodyMat = new THREE.MeshPhongMaterial({color:0x0a1828,shininess:120,specular:0x00e5ff});
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  group.add(body);
+
+  // Die (inner chip)
+  const dieGeo = new THREE.BoxGeometry(1.4,0.18,1.4);
+  const dieMat = new THREE.MeshPhongMaterial({color:0x050e1c,shininess:200,specular:0x2979ff});
+  const die = new THREE.Mesh(dieGeo, dieMat);
+  die.position.y = 0.01;
+  group.add(die);
+
+  // Circuit lines on top
+  const lineMat = new THREE.LineBasicMaterial({color:0x0e2a4a});
+  const linePositions = [
+    [-0.7,0.09,-0.7, 0.7,0.09,-0.7],
+    [-0.7,0.09,0,    0.7,0.09,0],
+    [-0.7,0.09,0.7,  0.7,0.09,0.7],
+    [-0.7,0.09,-0.7, -0.7,0.09,0.7],
+    [0,   0.09,-0.7, 0,   0.09,0.7],
+    [0.7, 0.09,-0.7, 0.7, 0.09,0.7],
+  ];
+  linePositions.forEach(p=>{
+    const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(p[0],p[1],p[2]),new THREE.Vector3(p[3],p[4],p[5])]);
+    group.add(new THREE.Line(g,lineMat));
+  });
+
+  // Glowing active lines
+  const glowLineMat = new THREE.LineBasicMaterial({color:0x2979ff});
+  const glowLines = [
+    [0,0.1,0, 0,0.1,-1.2],   // top
+    [0,0.1,0, 0,0.1,1.2],    // bottom
+    [0,0.1,0, -1.2,0.1,0],   // left
+    [0,0.1,0, 1.2,0.1,0],    // right
+  ];
+  glowLines.forEach(p=>{
+    const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(p[0],p[1],p[2]),new THREE.Vector3(p[3],p[4],p[5])]);
+    group.add(new THREE.Line(g,glowLineMat));
+  });
+
+  // Pads
+  const padGeo = new THREE.BoxGeometry(.12,.04,.08);
+  const padMat = new THREE.MeshPhongMaterial({color:0x1a3a60,shininess:300,specular:0x4488ff});
+  const padPositions = [];
+  for(let i=0;i<5;i++){
+    const x = -0.4+i*0.2;
+    padPositions.push([x, 0.085, -1.06]);
+    padPositions.push([x, 0.085,  1.06]);
+  }
+  for(let i=0;i<5;i++){
+    const z = -0.4+i*0.2;
+    const pg2=new THREE.BoxGeometry(.08,.04,.12);
+    padPositions.forEach(()=>{});
+    const pm = new THREE.Mesh(pg2, padMat);
+    pm.position.set(-1.06, 0.085, z); group.add(pm);
+    const pm2 = new THREE.Mesh(pg2, padMat);
+    pm2.position.set(1.06, 0.085, z); group.add(pm2);
+  }
+  padPositions.forEach(p=>{
+    const m=new THREE.Mesh(padGeo,padMat);
+    m.position.set(p[0],p[1],p[2]); group.add(m);
+  });
+
+  // Energy particles
+  const particles = [];
+  const particleGeo = new THREE.SphereGeometry(.03,6,6);
+  const pColors=[0x00e5ff,0x2979ff,0x7c4dff,0x00e676];
+  for(let i=0;i<30;i++){
+    const mat=new THREE.MeshBasicMaterial({color:pColors[i%4]});
+    const m=new THREE.Mesh(particleGeo,mat);
+    const angle=Math.random()*Math.PI*2;
+    const r=1.5+Math.random()*2;
+    m.position.set(Math.cos(angle)*r,Math.random()*.5-.25,Math.sin(angle)*r);
+    m.userData={angle,r,speed:.005+Math.random()*.015,y:m.position.y,vy:(Math.random()-.5)*.005};
+    scene.add(m);
+    particles.push(m);
+  }
+
+  // Orbit ring
+  const ringGeo = new THREE.TorusGeometry(2.5,.008,8,80);
+  const ringMat = new THREE.MeshBasicMaterial({color:0x0d2040});
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI/2;
+  scene.add(ring);
+
+  // Active ring
+  const activeRingGeo = new THREE.TorusGeometry(2.5,.015,8,80);
+  const activeRingMat = new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:.4});
+  const activeRing = new THREE.Mesh(activeRingGeo, activeRingMat);
+  activeRing.rotation.x = Math.PI/2;
+  scene.add(activeRing);
+
+  let viewMode = 'rotate';
+  let targetPos = {x:0,y:2,z:5};
+  let t = 0;
+
+  window.setView = function(mode){
+    viewMode = mode;
+    document.querySelectorAll('.ov-btn').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+    if(mode==='top')    targetPos={x:0,y:6,z:0.1};
+    if(mode==='side')   targetPos={x:5,y:0.5,z:0.1};
+    if(mode==='xray')   { bodyMat.transparent=true; bodyMat.opacity=.25; dieMat.transparent=true; dieMat.opacity=.4; }
+    else                { bodyMat.transparent=false; bodyMat.opacity=1;  dieMat.transparent=false; dieMat.opacity=1; }
+    if(mode==='rotate') targetPos={x:0,y:2,z:5};
+  };
+
+  function animate(){
+    requestAnimationFrame(animate);
+    t += .01;
+
+    if(viewMode==='rotate'){
+      group.rotation.y += .005;
+    }
+
+    // Smooth camera
+    camera.position.x += (targetPos.x - camera.position.x)*.05;
+    camera.position.y += (targetPos.y - camera.position.y)*.05;
+    camera.position.z += (targetPos.z - camera.position.z)*.05;
+    camera.lookAt(0,0,0);
+
+    // Particles orbit
+    particles.forEach(p=>{
+      p.userData.angle += p.userData.speed;
+      p.position.x = Math.cos(p.userData.angle)*p.userData.r;
+      p.position.z = Math.sin(p.userData.angle)*p.userData.r;
+      p.userData.y += p.userData.vy;
+      if(Math.abs(p.userData.y)>.4) p.userData.vy*=-1;
+      p.position.y = p.userData.y;
+    });
+
+    // Pulse active ring
+    activeRing.material.opacity = .2+Math.sin(t*2)*.2;
+    activeRing.scale.setScalar(1+Math.sin(t)*.02);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize',()=>{
+    renderer.setSize(W(),H());
+    camera.aspect=W()/H();
+    camera.updateProjectionMatrix();
+  });
+})();
+
+// ════════════════════════════════════════════════════════════
+//  RF SIMULATION CANVAS
+// ════════════════════════════════════════════════════════════
+(function(){
+  const c = document.getElementById('sim-canvas-full');
+  const ctx = c.getContext('2d');
+  let simRunning = true;
+  let simMode = 'wifi';
+  let t = 0;
+
+  const MODES = {
+    wifi: {freq:'2.4 GHz',col:'#00e5ff',freq2:2.4,power:'-8 dBm',volt:'3.9 V',curr:'78 mA',eff:'70%',batt:'73%'},
+    '4g':  {freq:'915 MHz',col:'#7c4dff',freq2:.915,power:'-11 dBm',volt:'3.7 V',curr:'62 mA',eff:'68%',batt:'73%'},
+    ism:   {freq:'433 MHz',col:'#2979ff',freq2:.433,power:'-14 dBm',volt:'3.4 V',curr:'45 mA',eff:'65%',batt:'73%'},
+    all:   {freq:'ALL BANDS',col:'#00e676',freq2:2.4,power:'-6 dBm',volt:'4.1 V',curr:'95 mA',eff:'72%',batt:'73%'},
+  };
+
+  function resize(){
+    c.width=c.clientWidth;
+    c.height=c.clientHeight||500;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  // Wave emitters (RF sources)
+  const sources = [
+    {x:.1,y:.3,label:'Wi-Fi AP'},
+    {x:.9,y:.2,label:'4G Antenne'},
+    {x:.15,y:.8,label:'BT / ISM'},
+    {x:.85,y:.75,label:'5G Cell'},
+  ];
+
+  // Ripples
+  const ripples=[];
+  setInterval(()=>{
+    sources.forEach(s=>{
+      ripples.push({x:s.x*c.width,y:s.y*c.height,r:0,a:.8,color:MODES[simMode].col});
+    });
+  },600);
+
+  // Flowing particles toward chip center
+  const fparticles=[];
+  setInterval(()=>{
+    const s=sources[Math.floor(Math.random()*sources.length)];
+    fparticles.push({
+      x:s.x*c.width,y:s.y*c.height,
+      tx:c.width/2,ty:c.height/2,
+      prog:0,speed:.008+Math.random()*.012,
+      col:MODES[simMode].col,
+      size:2+Math.random()*2
+    });
+  },80);
+
+  function draw(){
+    const W=c.width, H=c.height;
+    ctx.fillStyle='#060f1e';
+    ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='rgba(13,32,64,.5)';
+    ctx.lineWidth=.5;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // Ripples
+    ripples.forEach(r=>{
+      ctx.beginPath();
+      ctx.arc(r.x,r.y,r.r,0,Math.PI*2);
+      ctx.strokeStyle=r.color+Math.floor(r.a*255).toString(16).padStart(2,'0');
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+      r.r+=2.5; r.a-=.012;
+    });
+    for(let i=ripples.length-1;i>=0;i--) if(ripples[i].a<=0) ripples.splice(i,1);
+
+    // Flowing particles
+    fparticles.forEach(p=>{
+      p.prog+=p.speed;
+      const x=p.x+(p.tx-p.x)*p.prog;
+      const y=p.y+(p.ty-p.y)*p.prog;
+      ctx.beginPath();
+      ctx.arc(x,y,p.size,0,Math.PI*2);
+      ctx.fillStyle=p.col+Math.floor((1-p.prog)*255).toString(16).padStart(2,'0');
+      ctx.fill();
+    });
+    for(let i=fparticles.length-1;i>=0;i--) if(fparticles[i].prog>=1) fparticles.splice(i,1);
+
+    // Source nodes
+    sources.forEach((s,i)=>{
+      const sx=s.x*W, sy=s.y*H;
+      ctx.beginPath();
+      ctx.arc(sx,sy,8,0,Math.PI*2);
+      ctx.fillStyle='#0d2040';
+      ctx.fill();
+      ctx.strokeStyle=MODES[simMode].col;
+      ctx.lineWidth=1.5; ctx.stroke();
+      ctx.fillStyle=MODES[simMode].col;
+      ctx.font='10px Share Tech Mono';
+      ctx.fillText(s.label,sx+14,sy+4);
+    });
+
+    // Lines from sources to center
+    sources.forEach(s=>{
+      const sx=s.x*W, sy=s.y*H;
+      ctx.beginPath();
+      ctx.moveTo(sx,sy);
+      ctx.lineTo(W/2,H/2);
+      ctx.strokeStyle=MODES[simMode].col+'22';
+      ctx.lineWidth=1;
+      ctx.setLineDash([4,8]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    // Chip at center
+    const cx=W/2, cy=H/2;
+    const pulse=Math.sin(t*3)*.3+.7;
+    // glow
+    const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,60);
+    grad.addColorStop(0,MODES[simMode].col+'44');
+    grad.addColorStop(1,'transparent');
+    ctx.fillStyle=grad;
+    ctx.beginPath();ctx.arc(cx,cy,60,0,Math.PI*2);ctx.fill();
+    // chip body
+    ctx.fillStyle='#091526';
+    ctx.strokeStyle=MODES[simMode].col;
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    roundRect(ctx,cx-30,cy-30,60,60,6);
+    ctx.fill(); ctx.stroke();
+    // inner die
+    ctx.fillStyle='#050e1c';
+    ctx.strokeStyle='#1a3a60';
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    roundRect(ctx,cx-22,cy-22,44,44,3);
+    ctx.fill(); ctx.stroke();
+    // label
+    ctx.fillStyle=MODES[simMode].col;
+    ctx.font='bold 9px Orbitron';
+    ctx.textAlign='center';
+    ctx.fillText('POWER-Fi',cx,cy-4);
+    ctx.font='7px Share Tech Mono';
+    ctx.fillStyle='#4a6080';
+    ctx.fillText('CORE',cx,cy+8);
+    ctx.textAlign='left';
+    // pulse ring
+    ctx.beginPath();
+    ctx.arc(cx,cy,35+pulse*5,0,Math.PI*2);
+    ctx.strokeStyle=MODES[simMode].col+Math.floor(pulse*60).toString(16).padStart(2,'0');
+    ctx.lineWidth=1; ctx.stroke();
+
+    // Waveform at bottom
+    ctx.beginPath();
+    for(let x=0;x<W;x++){
+      const m=MODES[simMode];
+      const y2= H-60 + Math.sin(x*.04*m.freq2+t*3)*18*(simMode==='all'?1.4:1)
+              + Math.sin(x*.08+t*2)*6;
+      if(x===0) ctx.moveTo(x,y2); else ctx.lineTo(x,y2);
+    }
+    ctx.strokeStyle=MODES[simMode].col+'99';
+    ctx.lineWidth=1.5; ctx.stroke();
+
+    // Stats labels bottom
+    ctx.fillStyle=MODES[simMode].col;
+    ctx.font='10px Share Tech Mono';
+    ctx.fillText('SIGNAL RF — '+MODES[simMode].freq,12,H-10);
+
+    t+=.016;
+    if(simRunning) requestAnimationFrame(draw);
+    else { requestAnimationFrame(draw); } // keep running
+  }
+
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.moveTo(x+r,y);
+    ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+    ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+    ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
+    ctx.closePath();
+  }
+  draw();
+
+  // Update stats
+  setInterval(()=>{
+    const m=MODES[simMode];
+    const jitter=n=>{ const v=parseFloat(n); return (v+((Math.random()-.5)*parseFloat(n)*.08)).toFixed(1); };
+    document.getElementById('ss-power').textContent=m.power;
+    document.getElementById('ss-volt').textContent=jitter(m.volt.replace(' V',''))+' V';
+    document.getElementById('ss-curr').textContent=jitter(m.curr.replace(' mA',''))+' mA';
+    document.getElementById('ss-eff').textContent=m.eff;
+    document.getElementById('ss-freq').textContent=m.freq;
+    document.getElementById('ss-batt').textContent=m.batt;
+  },300);
+
+  window.setSimMode=function(mode){
+    simMode=mode;
+    document.querySelectorAll('.sim-btn').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+  };
+  window.toggleSim=function(){
+    simRunning=!simRunning;
+    document.getElementById('sim-toggle').textContent=simRunning?'⏸ PAUSE':'▶ PLAY';
+    if(simRunning) draw();
+  };
+})();
+
+// ════════════════════════════════════════════════════════════
+//  FLOW DETAIL
+// ════════════════════════════════════════════════════════════
+const flowData=[
+  {color:'#7c4dff',title:'01 // CAPTATION RF — Antenne large bande',body:'L\'antenne capte simultanément sur 3 bandes ISM : 433 MHz, 915 MHz et 2,4 GHz. Sensibilité minimale à −15 dBm pour opérer même dans les zones faiblement rayonnées. La topologie large bande maximise la collecte en tout environnement.',tags:[{l:'433 MHz',c:'ft-v'},{l:'915 MHz',c:'ft-v'},{l:'2.4 GHz',c:'ft-v'},{l:'−15 dBm',c:'ft-b'},{l:'Large bande',c:'ft-b'}]},
+  {color:'#2979ff',title:'02 // REDRESSEMENT — Conversion AC→DC',body:'Le redresseur multi-étages (topologie Dickson charge pump) convertit le signal RF alternatif en tension continue. Rendement 70%. La tension de sortie est stabilisée entre 3,3 V et 4,2 V, compatible Li-ion et LiPo.',tags:[{l:'Dickson Pump',c:'ft-b'},{l:'3.3–4.2 V',c:'ft-c'},{l:'70% rendement',c:'ft-g'},{l:'AC→DC',c:'ft-b'}]},
+  {color:'#00e5ff',title:'03 // STOCKAGE TAMPON — Supercondensateur',body:'Un micro-supercondensateur intégré agit comme tampon entre le redresseur et le circuit de gestion. Il lisse les fluctuations RF et garantit un flux continu vers la batterie — c\'est lui qui donne à la puce son comportement de mini-batterie embarquée.',tags:[{l:'Supercap',c:'ft-c'},{l:'Buffer',c:'ft-c'},{l:'Flux stable',c:'ft-g'},{l:'Anti-fluctuation',c:'ft-a'}]},
+  {color:'#00e676',title:'04 // SÉCURITÉ — Safe by Design',body:'Surveillance temps réel : température (arrêt si T°>40°C), tension de sortie, présence de dispositifs médicaux (pacemaker), et niveau de charge. Conforme IEC 61980-5, SAE J2954, Qi WPC v2.0.',tags:[{l:'Safe by Design',c:'ft-g'},{l:'Thermique',c:'ft-a'},{l:'Pacemaker',c:'ft-a'},{l:'CEM',c:'ft-g'},{l:'Arrêt 100%',c:'ft-g'}]},
+  {color:'#ffab00',title:'05 // INJECTION BATTERIE — Recharge régulée',body:'Courant injecté de 100 mA max, tension stabilisée à ±50 mV. Recharge transparente en arrière-plan. L\'arrêt auto à 100% protège la durée de vie. L\'UI affiche en temps réel : puissance reçue, tension, temps estimé.',tags:[{l:'100 mA max',c:'ft-a'},{l:'Li-ion/LiPo',c:'ft-a'},{l:'Arrêt 100%',c:'ft-g'},{l:'Fond tâche',c:'ft-a'},{l:'UI live',c:'ft-c'}]},
+];
+
+window.showFlow=function(i){
+  const d=flowData[i];
+  const panel=document.getElementById('flowDetail');
+  panel.style.borderLeftColor=d.color;
+  panel.innerHTML=`<div class="fd-title" style="color:${d.color}">${d.title}</div>
+    <div class="fd-body">${d.body}</div>
+    <div class="fd-tags">${d.tags.map(t=>`<span class="ftag ${t.c}">${t.l}</span>`).join('')}</div>`;
+  document.querySelectorAll('.fg-step').forEach((el,j)=>el.classList.toggle('active',j===i));
+};
+
+// ════════════════════════════════════════════════════════════
+//  DASHBOARD — GAUGE
+// ════════════════════════════════════════════════════════════
+(function(){
+  const c=document.getElementById('gauge-canvas');
+  const ctx=c.getContext('2d');
+  let val=0,target=72;
+  function resize(){ c.width=c.clientWidth; c.height=c.clientHeight||180; }
+  resize();
+  window.addEventListener('resize',resize);
+
+  function draw(){
+    const W=c.width,H=c.height;
+    const cx=W/2,cy=H*.75,r=Math.min(W,H)*.55;
+    ctx.clearRect(0,0,W,H);
+    // bg arc
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,Math.PI,0);
+    ctx.strokeStyle='#0d2040'; ctx.lineWidth=12; ctx.stroke();
+    // colored arc
+    const angle=Math.PI*(val/100);
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,Math.PI,Math.PI+angle);
+    const g=ctx.createLinearGradient(cx-r,cy,cx+r,cy);
+    g.addColorStop(0,'#2979ff'); g.addColorStop(.5,'#00e5ff'); g.addColorStop(1,'#00e676');
+    ctx.strokeStyle=g; ctx.lineWidth=12; ctx.stroke();
+    // value
+    ctx.fillStyle='#00e5ff';
+    ctx.font=`bold ${Math.floor(r*.35)}px Orbitron`;
+    ctx.textAlign='center';
+    ctx.fillText(Math.round(val)+'%',cx,cy-10);
+    ctx.fillStyle='#4a6080';
+    ctx.font=`${Math.floor(r*.15)}px Share Tech Mono`;
+    ctx.fillText('RENDEMENT',cx,cy+16);
+    // ticks
+    for(let i=0;i<=10;i++){
+      const a=Math.PI+i*Math.PI/10;
+      ctx.beginPath();
+      ctx.moveTo(cx+(r+5)*Math.cos(a),cy+(r+5)*Math.sin(a));
+      ctx.lineTo(cx+(r+12)*Math.cos(a),cy+(r+12)*Math.sin(a));
+      ctx.strokeStyle='#1a3a60'; ctx.lineWidth=1.5; ctx.stroke();
+    }
+    val+=(target-val)*.05;
+    requestAnimationFrame(draw);
+  }
+  draw();
+  setInterval(()=>{ target=65+Math.random()*10; },2000);
+})();
+
+// ════════════════════════════════════════════════════════════
+//  DASHBOARD — WAVEFORM
+// ════════════════════════════════════════════════════════════
+(function(){
+  const c=document.getElementById('wave-canvas');
+  const ctx=c.getContext('2d');
+  const history=[];
+  let t=0;
+  function resize(){ c.width=c.clientWidth; c.height=c.clientHeight||160; }
+  resize();
+  window.addEventListener('resize',resize);
+
+  function draw(){
+    const W=c.width,H=c.height;
+    ctx.fillStyle='rgba(9,21,38,0.3)';
+    ctx.fillRect(0,0,W,H);
+    const v=Math.sin(t*2.4)*25+Math.sin(t*4.1)*12+Math.sin(t*7)*5;
+    history.push(v);
+    if(history.length>W) history.shift();
+
+    // Channel 1 - RF signal
+    ctx.beginPath();
+    history.forEach((val,i)=>{
+      const x=i,y=H/3+val*.5;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle='#00e5ff'; ctx.lineWidth=1.5; ctx.stroke();
+
+    // Channel 2 - Rectified
+    ctx.beginPath();
+    history.forEach((val,i)=>{
+      const x=i,y=H*.7+Math.abs(val)*.3;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle='#00e676'; ctx.lineWidth=1.5; ctx.stroke();
+
+    // Labels
+    ctx.fillStyle='#00e5ff88';
+    ctx.font='9px Share Tech Mono';
+    ctx.fillText('CH1: RF INPUT',8,14);
+    ctx.fillStyle='#00e67688';
+    ctx.fillText('CH2: RECTIFIED',8,H/2+14);
+
+    t+=.05;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ════════════════════════════════════════════════════════════
+//  DASHBOARD — BATTERY BAR
+// ════════════════════════════════════════════════════════════
+(function(){
+  const c=document.getElementById('bar-canvas');
+  const ctx=c.getContext('2d');
+  let battLevel=73;
+  function resize(){ c.width=c.clientWidth; c.height=c.clientHeight||160; }
+  resize();
+  window.addEventListener('resize',resize);
+
+  function draw(){
+    const W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);
+    // Battery outline
+    const bw=W*.7, bh=H*.45, bx=(W-bw)/2, by=(H-bh)/2;
+    // terminal
+    ctx.fillStyle='#1a3a60';
+    ctx.fillRect(bx+bw+2,by+bh*.3,8,bh*.4);
+    // outline
+    ctx.strokeStyle='#1a3a60'; ctx.lineWidth=2;
+    ctx.strokeRect(bx,by,bw,bh);
+    // fill
+    const fw=bw*battLevel/100;
+    const g=ctx.createLinearGradient(bx,0,bx+fw,0);
+    g.addColorStop(0,'#2979ff');
+    g.addColorStop(.5,'#00e5ff');
+    g.addColorStop(1,'#00e676');
+    ctx.fillStyle=g;
+    ctx.fillRect(bx+2,by+2,fw-4,bh-4);
+    // %
+    ctx.fillStyle='#fff';
+    ctx.font=`bold ${Math.floor(bh*.55)}px Orbitron`;
+    ctx.textAlign='center';
+    ctx.fillText(Math.round(battLevel)+'%',W/2,by+bh*.72);
+    ctx.fillStyle='#4a6080';
+    ctx.font='9px Share Tech Mono';
+    ctx.fillText('EN CHARGE VIA POWER-Fi',W/2,by+bh+18);
+    ctx.textAlign='left';
+    battLevel = Math.min(100, battLevel + .003);
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ════════════════════════════════════════════════════════════
+//  DASHBOARD — LIVE VALUES
+// ════════════════════════════════════════════════════════════
+setInterval(()=>{
+  const v=(3.7+Math.random()*.15).toFixed(2);
+  const a=Math.round(75+Math.random()*20);
+  const temp=Math.round(27+Math.random()*4);
+  document.getElementById('live-volt').textContent=v+'V';
+  document.getElementById('live-curr').textContent=a+'mA';
+  // Temp arc
+  const pct=temp/85;
+  const offset=314-(314*pct*.6);
+  document.getElementById('temp-arc').setAttribute('stroke-dashoffset',offset+50);
+  document.getElementById('temp-val').textContent=temp+'°C';
+},600);
+
+// ════════════════════════════════════════════════════════════
+//  NAV ACTIVE STATE ON SCROLL
+// ════════════════════════════════════════════════════════════
+const sections=[
+  ['hero','ACCUEIL'],['sec3d','3D'],['secsim','SIM RF'],
+  ['secflow','FLUX'],['secdash','DASHBOARD'],['secspecs','SPECS']
+];
+window.addEventListener('scroll',()=>{
+  const links=document.querySelectorAll('.nav-links a');
+  let current='hero';
+  sections.forEach(([id])=>{
+    const el=document.getElementById(id);
+    if(el && window.scrollY>=el.offsetTop-120) current=id;
+  });
+  links.forEach((l,i)=>{
+    l.classList.toggle('active', sections[i] && sections[i][0]===current);
+  });
+});
+</script>
+</body>
+</html>
